@@ -77,16 +77,16 @@ App will be available at [http://localhost:3000](http://localhost:3000)
 
 ```
 ├── src/
-│   ├── app/         # Next.js app directory
-│   ├── lib/         # Utility functions
-│   ├── types/       # Type definitions
-│   ├── auth.ts      # AuthJS config
-│   └── middleware.ts# Middleware
+│   ├── app/            # Next.js app directory
+│   ├── lib/            # Utility functions
+│   ├── types/          # Type definitions
+│   ├── auth.ts         # AuthJS config
+│   └── middleware.ts   # Middleware
 ├── prisma/
-│   └── schema.prisma# Prisma schema
-├── public/          # Static assets
-├── package.json     # Project metadata & scripts
-├── README.md        # Project documentation
+│   └── schema.prisma   # Prisma schema
+├── public/             # Static assets
+├── package.json        # Project metadata & scripts
+├── README.md           # Project documentation
 ```
 
 ## Contributing

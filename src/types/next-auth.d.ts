@@ -6,12 +6,14 @@ declare module 'next-auth' {
       id: string;
       email: string;
       username: string;
+      role?: 'USER' | 'ADMIN' | 'DEVELOPER';
     };
   }
   interface User extends DefaultUser {
     id: string;
     email: string;
     username: string;
+    role?: 'USER' | 'ADMIN' | 'DEVELOPER';
   }
 }
 
@@ -20,5 +22,6 @@ declare module 'next-auth/jwt' {
     id?: string;
     email?: string;
     username?: string;
+    role?: 'USER' | 'ADMIN' | 'DEVELOPER';
   }
 }
