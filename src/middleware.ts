@@ -1,4 +1,4 @@
-import { getToken } from 'next-auth/jwt';
+import { getCookieCache } from 'better-auth/cookies';
 import { NextRequest, NextResponse } from 'next/server';
 
 const ROUTES_CONFIG = {
@@ -10,24 +10,18 @@ const ROUTES_CONFIG = {
 };
 
 export async function middleware(request: NextRequest) {
-  const token = await getToken({
-    req: request,
-    secret: process.env.AUTH_SECRET,
-    cookieName:
-      process.env.NODE_ENV === 'production'
-        ? '__Secure-authjs.session-token'
-        : 'authjs.session-token',
-  });
+  const session = await getCookieCache(request);
+  const userRole = session?.user?.role;
 
   const { pathname } = request.nextUrl;
 
   const match = (routes: string[]) => routes.some((r) => pathname.startsWith(r));
 
-  if ((match(ROUTES_CONFIG.protected) || match(ROUTES_CONFIG.admin)) && !token) {
+  if ((match(ROUTES_CONFIG.protected) || match(ROUTES_CONFIG.admin)) && !session) {
     return NextResponse.redirect(new URL(ROUTES_CONFIG.redirectAfterLogout, request.url));
   }
 
-  if (match(ROUTES_CONFIG.admin) && !['ADMIN', 'DEVELOPER'].includes(token?.role ?? '')) {
+  if (match(ROUTES_CONFIG.admin) && !['ADMIN', 'DEVELOPER'].includes(userRole ?? '')) {
     return NextResponse.redirect(new URL('/403', request.url));
   }
 
