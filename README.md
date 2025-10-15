@@ -130,28 +130,28 @@ The project includes the following models:
 
 ```
 ├── src/
-│   ├── app/                 # Next.js app directory
+│   ├── app/                   # Next.js app directory
 │   │   ├── api/
 │   │   │   └── auth/
-│   │   │       └── [...all]/   # Better Auth API routes
-│   │   ├── globals.css      # Global styles
-│   │   ├── layout.tsx       # Root layout
-│   │   └── page.tsx         # Home page
-│   ├── lib/                 # Utility functions
-│   │   ├── auth.ts          # Better Auth server config
-│   │   ├── auth-client.ts   # Better Auth client config
-│   │   ├── get-session.ts   # Session utilities
-│   │   ├── prisma.ts        # Prisma client
-│   │   └── utils.ts         # General utilities
-│   └── middleware.ts        # Route protection middleware
+│   │   │       └── [...all]/  # Better Auth API routes
+│   │   ├── globals.css        # Global styles
+│   │   ├── layout.tsx         # Root layout
+│   │   └── page.tsx           # Home page
+│   ├── lib/                   # Utility functions
+│   │   ├── auth.ts            # Better Auth server config
+│   │   ├── auth-client.ts     # Better Auth client config
+│   │   ├── get-session.ts     # Session utilities
+│   │   ├── prisma.ts          # Prisma client
+│   │   └── utils.ts           # General utilities
+│   └── middleware.ts          # Route protection middleware
 ├── prisma/
-│   └── schema.prisma        # Prisma schema with Better Auth models
+│   └── schema.prisma          # Prisma schema with Better Auth models
 ├── generated/
-│   └── prisma/              # Generated Prisma client
-├── public/                  # Static assets
-├── components.json          # Shadcn UI configuration
-├── package.json             # Project dependencies & scripts
-└── README.md                # Project documentation
+│   └── prisma/                # Generated Prisma client
+├── public/                    # Static assets
+├── components.json            # Shadcn UI configuration
+├── package.json               # Project dependencies & scripts
+└── README.md                  # Project documentation
 ```
 
 ## Contributing
