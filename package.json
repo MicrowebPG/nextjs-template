@@ -11,9 +11,6 @@
     "commit": "cz"
   },
   "dependencies": {
-    "@prisma/client": "^6.16.2",
-    "bcrypt": "^6.0.0",
-    "better-auth": "^1.3.27",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "lucide-react": "^0.544.0",
@@ -35,7 +32,6 @@
     "husky": "^9.1.7",
     "lint-staged": "^16.1.6",
     "prettier-plugin-tailwindcss": "^0.7.0",
-    "prisma": "^6.16.2",
     "tailwindcss": "^4",
     "tsx": "^4.20.5",
     "tw-animate-css": "^1.3.8",
