@@ -12,6 +12,7 @@
     "commit": "cz"
   },
   "dependencies": {
+    "@prisma/adapter-mariadb": "^7.0.0",
     "@prisma/client": "^7.0.0",
     "bcrypt": "^6.0.0",
     "better-auth": "^1.3.27",
