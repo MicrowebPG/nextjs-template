@@ -1,5 +1,8 @@
 import { betterAuth } from 'better-auth';
 import { prismaAdapter } from 'better-auth/adapters/prisma';
+import { admin } from 'better-auth/plugins';
+import { Role } from '../../generated/prisma/enums';
+import { ac, roles } from './permissions';
 import prisma from './prisma';
 
 export const auth = betterAuth({
@@ -14,13 +17,24 @@ export const auth = betterAuth({
     enabled: true,
   },
   user: {
+    deleteUser: {
+      enabled: true,
+    },
     additionalFields: {
       role: {
-        type: 'string',
+        type: ['ADMIN', 'DEVELOPER', 'USER'],
         input: false,
       },
     },
   },
+  plugins: [
+    admin({
+      ac,
+      defaultRole: Role.USER,
+      adminRoles: [Role.ADMIN, Role.DEVELOPER],
+      roles,
+    }),
+  ],
 });
 
 export type Session = typeof auth.$Infer.Session;

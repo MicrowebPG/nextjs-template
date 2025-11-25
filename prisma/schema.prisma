@@ -23,12 +23,6 @@ model User {
   @@map("user")
 }
 
-enum Role {
-  USER
-  ADMIN
-  DEVELOPER
-}
-
 model Session {
   id        String   @id
   expiresAt DateTime
@@ -41,6 +35,7 @@ model Session {
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([token])
+  @@index([userId(length: 191)])
   @@map("session")
 }
 
@@ -60,6 +55,7 @@ model Account {
   createdAt             DateTime  @default(now())
   updatedAt             DateTime  @updatedAt
 
+  @@index([userId(length: 191)])
   @@map("account")
 }
 
@@ -71,5 +67,12 @@ model Verification {
   createdAt  DateTime @default(now())
   updatedAt  DateTime @default(now()) @updatedAt
 
+  @@index([identifier(length: 191)])
   @@map("verification")
+}
+
+enum Role {
+  USER
+  ADMIN
+  DEVELOPER
 }
