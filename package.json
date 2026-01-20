@@ -9,7 +9,8 @@
     "start": "next start",
     "lint": "eslint",
     "prepare": "husky",
-    "commit": "cz"
+    "commit": "cz",
+    "clean": "rm -rf .next generated && npm cache clean --force && npx prisma generate"
   },
   "dependencies": {
     "@prisma/adapter-mariadb": "^7.2.0",
