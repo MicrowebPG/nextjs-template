@@ -78,8 +78,8 @@ This project uses **Better Auth** for authentication with the following features
 
 ### Authentication Setup
 
-- Better Auth is configured in `src/lib/auth.ts`
-- Client-side auth utilities in `src/lib/auth-client.ts`
+- Better Auth is configured in `src/features/auth/lib/auth.ts`
+- Client-side auth utilities in `src/features/auth/lib/auth-client.ts`
 - API routes under `src/app/api/auth/[...all]/route.ts`
 
 ## UI Components
@@ -121,6 +121,7 @@ The project includes the following models:
 - `npm run lint` — Run ESLint
 - `npm run commit` — Start Commitizen CLI for conventional commits
 - `npm run prepare` — Set up Husky git hooks
+- `npm run clean`- Remove `.next` and `generated/prisma/` folders, clean npm cache and regenerate Prisma client
 
 ## Project Structure
 
@@ -136,24 +137,13 @@ The project includes the following models:
 │   │   └── page.tsx                       # Home page
 │   ├── features/
 │   │   └── auth/                          # Authentication feature module
-│   │       ├── actions/
-│   │       │   ├── get-session.ts
-│   │       │   └── sign-out.ts
 │   │       ├── components/
-│   │       │   ├── auth-guard.tsx
 │   │       │   └── protected-route.tsx
-│   │       ├── hooks/
-│   │       │   ├── use-login.ts
-│   │       │   ├── use-register.ts
-│   │       │   └── use-session.ts
 │   │       ├── lib/
 │   │       │   ├── auth-client.ts
 │   │       │   ├── auth.ts
 │   │       │   ├── get-session.ts
 │   │       │   └── permissions.ts
-│   │       ├── schemas/
-│   │       │   ├── login.schema.ts
-│   │       │   └── register.schema.ts
 │   │       ├── types/
 │   │       │   └── index.ts
 │   │       ├── constants.ts
