@@ -1,8 +1,8 @@
+import { Role } from '@/generated/prisma/enums';
 import prisma from '@/lib/prisma';
 import { betterAuth } from 'better-auth';
 import { prismaAdapter } from 'better-auth/adapters/prisma';
 import { admin } from 'better-auth/plugins';
-import { Role } from '../../../../generated/prisma/enums';
 import { AUTH_SESSION_UPDATE_AGE, AUTH_TOKEN_EXPIRY } from '../constants';
 import { ac, roles } from './permissions';
 

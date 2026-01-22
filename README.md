@@ -121,7 +121,7 @@ The project includes the following models:
 - `npm run lint` — Run ESLint
 - `npm run commit` — Start Commitizen CLI for conventional commits
 - `npm run prepare` — Set up Husky git hooks
-- `npm run clean`- Remove `.next` and `generated/prisma/` folders, clean npm cache and regenerate Prisma client
+- `npm run clean` — Remove `.next` and `generated/prisma/` folders, clean npm cache and regenerate Prisma client
 
 ## Project Structure
 
