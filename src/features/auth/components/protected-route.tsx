@@ -1,7 +1,5 @@
-'use client';
-
 import { ReactNode } from 'react';
-import { getSessionServer } from '../actions/get-session';
+import { getServerSession } from '../lib/get-session';
 
 interface ProtectedRouteProps {
   children: ReactNode;
@@ -9,7 +7,7 @@ interface ProtectedRouteProps {
 }
 
 export async function ProtectedRoute({ children, fallback }: ProtectedRouteProps) {
-  const session = await getSessionServer();
+  const session = await getServerSession();
 
   if (!session?.session) {
     return fallback || <div>Unauthorized. Please log in.</div>;

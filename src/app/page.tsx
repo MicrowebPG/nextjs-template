@@ -1,9 +1,9 @@
 'use client';
 
-import { useSession } from '@/features/auth';
+import { useSession } from '@/features/auth/lib/auth-client';
 
 export default function Home() {
-  const { session, isLoading } = useSession();
+  const { data: session, isPending } = useSession();
 
   return (
     <main className="mx-auto flex max-w-7xl flex-col items-center gap-12 px-4 py-8">
@@ -19,7 +19,7 @@ export default function Home() {
       {/* Session Status */}
       <div className="w-full max-w-2xl rounded-lg border border-neutral-200 bg-neutral-50 p-6 dark:border-neutral-800 dark:bg-neutral-900">
         <h2 className="font-semibold">🔐 Session Status</h2>
-        {isLoading ? (
+        {isPending ? (
           <p className="text-muted-foreground mt-2 text-sm">Loading session...</p>
         ) : session ? (
           <div className="mt-3 space-y-2 rounded bg-green-50 p-3 dark:bg-green-950">
