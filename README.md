@@ -1,18 +1,18 @@
 # Next.js 16 Template
 
-A modern web application template built with Next.js 16.1.4, Better Auth for authentication, Prisma ORM (MySQL), Shadcn UI components, Husky for git hooks, and Commitizen for conventional commits.
+A modern web application template built with Next.js 16, Better Auth for authentication, Prisma ORM (MySQL), Shadcn UI components, Husky for git hooks, and Commitizen for conventional commits.
 
 ## Tech Stack
 
-- **Next.js 16.1.4**: React framework with Turbopack for blazing fast builds
-- **React 19.2.3**: Latest React with improved performance
-- **Better Auth 1.4.16**: Modern authentication library with email/password support
-- **Prisma 7.2.0**: Type-safe ORM for MySQL with custom client generation
+- **Next.js**: React framework with Turbopack for blazing fast builds
+- **React**: Latest React with improved performance
+- **Better Auth**: Modern authentication library with email/password support
+- **Prisma**: Type-safe ORM for MySQL with custom client generation
 - **Shadcn UI**: Beautiful, accessible React components
-- **Tailwind CSS 4.1.18**: Latest utility-first CSS framework
-- **TypeScript 5.9.3**: Type-safe JavaScript
-- **Lucide React 0.562.0**: Beautiful, customizable icons
-- **Husky 9.1.7**: Git hooks for code quality
+- **Tailwind CSS**: Latest utility-first CSS framework
+- **TypeScript**: Type-safe JavaScript
+- **Lucide React**: Beautiful, customizable icons
+- **Husky**: Git hooks for code quality
 - **Commitizen**: Standardized commit messages
 
 ## Getting Started
@@ -78,8 +78,8 @@ This project uses **Better Auth** for authentication with the following features
 
 ### Authentication Setup
 
-- Better Auth is configured in `src/lib/auth.ts`
-- Client-side auth utilities in `src/lib/auth-client.ts`
+- Better Auth is configured in `src/features/auth/lib/auth.ts`
+- Client-side auth utilities in `src/features/auth/lib/auth-client.ts`
 - API routes under `src/app/api/auth/[...all]/route.ts`
 
 ## UI Components
@@ -121,48 +121,58 @@ The project includes the following models:
 - `npm run lint` — Run ESLint
 - `npm run commit` — Start Commitizen CLI for conventional commits
 - `npm run prepare` — Set up Husky git hooks
+- `npm run clean` — Remove `.next` and `generated/prisma/` folders, clean npm cache and regenerate Prisma client
 
 ## Project Structure
 
 ```
 ├── src/
-│   ├── app/                   # Next.js app directory
+│   ├── app/
 │   │   ├── api/
 │   │   │   └── auth/
-│   │   │       └── [...all]/  # Better Auth API routes
-│   │   ├── favicon.ico        # App favicon
-│   │   ├── globals.css        # Global styles
-│   │   ├── layout.tsx         # Root layout
-│   │   └── page.tsx           # Home page
-│   ├── lib/                   # Utility functions
-│   │   ├── auth.ts            # Better Auth server config
-│   │   ├── auth-client.ts     # Better Auth client config
-│   │   ├── get-session.ts     # Session utilities
-│   │   ├── permissions.ts     # Role-based permissions
-│   │   ├── prisma.ts          # Prisma client singleton
-│   │   └── utils.ts           # General utilities (cn, etc.)
+│   │   │       └── [...all]/
+│   │   │           └── route.ts           # Better Auth handler
+│   │   ├── globals.css                    # Global styles
+│   │   ├── layout.tsx                     # Root layout
+│   │   └── page.tsx                       # Home page
+│   ├── features/
+│   │   └── auth/                          # Authentication feature module
+│   │       ├── components/
+│   │       │   └── protected-route.tsx
+│   │       ├── lib/
+│   │       │   ├── auth-client.ts
+│   │       │   ├── auth.ts
+│   │       │   ├── get-session.ts
+│   │       │   └── permissions.ts
+│   │       ├── types/
+│   │       │   └── index.ts
+│   │       ├── constants.ts
+│   │       └── index.ts
+│   ├── lib/
+│   │   ├── prisma.ts                      # Prisma client singleton
+│   │   └── utils.ts                       # Utilities (cn, etc.)
 ├── prisma/
-│   ├── schema.prisma          # Prisma schema with Better Auth models
-│   └── migrations/            # Database migrations
+│   ├── schema.prisma
+│   └── migrations/
 ├── generated/
-│   └── prisma/                # Generated Prisma client
-│       ├── client.ts
+│   └── prisma/
 │       ├── browser.ts
-│       ├── models.ts
-│       └── models/            # Generated model types
-├── public/                    # Static assets
-├── .env.example               # Environment variables template
-├── .husky/                    # Husky git hooks
-├── .lintstagedrc.mjs          # Lint-staged configuration
-├── .prettierrc                # Prettier configuration
-├── components.json            # Shadcn UI configuration
-├── eslint.config.mjs          # ESLint 9 flat config
-├── next.config.ts             # Next.js configuration
-├── package.json               # Project dependencies & scripts
-├── postcss.config.mjs         # PostCSS configuration
-├── prisma.config.ts           # Prisma custom configuration
-├── tsconfig.json              # TypeScript configuration
-└── README.md                  # Project documentation
+│       ├── client.ts
+│       ├── commonInputTypes.ts
+│       ├── enums.ts
+│       ├── internal/
+│       ├── models/
+│       └── models.ts
+├── public/                                # Static assets (SVGs)
+├── components.json                        # Shadcn UI configuration
+├── eslint.config.mjs                      # ESLint 9 flat config
+├── next-env.d.ts
+├── next.config.ts
+├── package.json
+├── postcss.config.mjs
+├── prisma.config.ts
+├── tsconfig.json
+└── README.md
 ```
 
 ## Contributing
