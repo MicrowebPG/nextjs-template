@@ -1,6 +1,6 @@
 # Next.js 16 Template
 
-A modern web application template built with Next.js 16, Better Auth for authentication, Prisma ORM (MySQL), Shadcn UI components, Husky for git hooks, and Commitizen for conventional commits.
+A modern web application template built with Next.js 16, Better Auth for authentication, Prisma ORM (MySQL), Shadcn UI components, Husky for git hooks, and Commitlint for enforcing conventional commits.
 
 ## Tech Stack
 
@@ -13,7 +13,7 @@ A modern web application template built with Next.js 16, Better Auth for authent
 - **TypeScript**: Type-safe JavaScript
 - **Lucide React**: Beautiful, customizable icons
 - **Husky**: Git hooks for code quality
-- **Commitizen**: Standardized commit messages
+- **Commitlint**: Enforces conventional commit message standards
 
 ## Getting Started
 
@@ -111,7 +111,7 @@ The project includes the following models:
 ## Code Quality & Commits
 
 - **Husky**: Pre-commit hooks for linting and formatting
-- **Commitizen**: Use `npm run commit` for conventional commit messages
+- **Commitlint**: Use `npm run commit` for conventional commit messages
 
 ## Scripts
 
@@ -119,7 +119,7 @@ The project includes the following models:
 - `npm run build` — Build for production with Turbopack
 - `npm run start` — Start production server
 - `npm run lint` — Run ESLint
-- `npm run commit` — Start Commitizen CLI for conventional commits
+- `npm run commit` — Start Commitlint CLI for conventional commits
 - `npm run prepare` — Set up Husky git hooks
 - `npm run clean` — Remove `.next` and `generated/prisma/` folders, clean npm cache and regenerate Prisma client
 
