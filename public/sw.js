@@ -3,8 +3,6 @@ self.addEventListener('push', function (event) {
     const data = event.data.json();
     const options = {
       body: data.body,
-      icon: data.icon || '/icon.png',
-      badge: '/badge.png',
       vibrate: [100, 50, 100],
       data: {
         dateOfArrival: Date.now(),
@@ -18,5 +16,5 @@ self.addEventListener('push', function (event) {
 self.addEventListener('notificationclick', function (event) {
   console.log('Notification click received.');
   event.notification.close();
-  event.waitUntil(clients.openWindow(process.env.BETTER_AUTH_URL || '<https://your-website.com>'));
+  event.waitUntil(clients.openWindow(process.env.NOTIFICATION_URL || '<https://your-website.com>'));
 });

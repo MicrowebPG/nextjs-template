@@ -1,9 +1,12 @@
 'use client';
 
-import { useSession } from '@/features/auth/lib/auth-client';
+import { NotificationSubscriptionForm } from '@/features/push-notifications/components/notification-subscription-form';
+import NotificationSubscriptionStatus from '@/features/push-notifications/components/notification-subscription-status';
+import { UnsupportedNotificationMessage } from '@/features/push-notifications/components/unsupported-notification-message';
+import { useNotification } from '@/features/push-notifications/hook/use-notification';
 
 export default function Home() {
-  const { data: session, isPending } = useSession();
+  const { isSupported, isSubscribed } = useNotification();
 
   return (
     <main className="mx-auto flex max-w-7xl flex-col items-center gap-12 px-4 py-8">
@@ -16,28 +19,10 @@ export default function Home() {
         </p>
       </div>
 
-      {/* Session Status */}
-      <div className="w-full max-w-2xl rounded-lg border border-neutral-200 bg-neutral-50 p-6 dark:border-neutral-800 dark:bg-neutral-900">
-        <h2 className="font-semibold">🔐 Session Status</h2>
-        {isPending ? (
-          <p className="text-muted-foreground mt-2 text-sm">Loading session...</p>
-        ) : session ? (
-          <div className="mt-3 space-y-2 rounded bg-green-50 p-3 dark:bg-green-950">
-            <p className="text-sm font-medium text-green-900 dark:text-green-100">
-              ✅ Session Active
-            </p>
-            <pre className="overflow-auto rounded bg-white p-2 text-xs dark:bg-black">
-              {JSON.stringify(session, null, 2)}
-            </pre>
-          </div>
-        ) : (
-          <div className="mt-3 rounded bg-yellow-50 p-3 dark:bg-yellow-950">
-            <p className="text-sm text-yellow-900 dark:text-yellow-100">
-              ⚠️ No session - User not authenticated
-            </p>
-          </div>
-        )}
-      </div>
+      {/* Notification Status */}
+      {!isSupported ? <UnsupportedNotificationMessage /> : <NotificationSubscriptionStatus />}
+
+      {isSubscribed && <NotificationSubscriptionForm />}
     </main>
   );
 }
