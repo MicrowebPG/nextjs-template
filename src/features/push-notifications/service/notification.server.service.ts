@@ -1,3 +1,4 @@
+import prisma from '@/lib/prisma';
 import webpush, { PushSubscription } from 'web-push';
 
 interface NotificationPayload {
@@ -31,4 +32,28 @@ export async function sendNotification(
   };
 
   await webpush.sendNotification(subscription, JSON.stringify(payload));
+}
+
+export async function sendToUser(userId: string, title: string, message: string): Promise<void> {
+  const subscriptions = await prisma.pushSubscription.findMany({
+    where: { userId },
+  });
+
+  for (const sub of subscriptions) {
+    try {
+      await sendNotification(
+        { endpoint: sub.endpoint, keys: { auth: sub.auth, p256dh: sub.p256dh } },
+        title,
+        message,
+      );
+    } catch (error) {
+      if (error instanceof webpush.WebPushError && error.statusCode === 410) {
+        await prisma.pushSubscription.delete({ where: { id: sub.id } });
+      }
+    }
+  }
+
+  await prisma.notification.create({
+    data: { title, message, userId },
+  });
 }

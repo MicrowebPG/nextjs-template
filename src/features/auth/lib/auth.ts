@@ -26,6 +26,10 @@ export const auth = betterAuth({
         type: ['ADMIN', 'DEVELOPER', 'USER'],
         input: false,
       },
+      username: {
+        type: 'string',
+        required: true,
+      },
     },
   },
   plugins: [

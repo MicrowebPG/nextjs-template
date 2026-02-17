@@ -13,6 +13,8 @@ import {
   isNotificationSupported,
   getNotificationPermission,
   subscribeToPush,
+  saveSubscription,
+  removeSubscription,
 } from '../service/notification.client.service';
 
 interface NotificationContextType {
@@ -23,6 +25,7 @@ interface NotificationContextType {
   subscription: PushSubscription | null;
   errorMessage: string | null;
   handleSubscribe: () => void;
+  handleUnsubscribe: () => void;
 }
 
 const NotificationContext = createContext<NotificationContextType | undefined>(undefined);
@@ -49,6 +52,7 @@ export const NotificationProvider: React.FC<{ children: ReactNode }> = ({ childr
     try {
       const sub = await subscribeToPush();
       setSubscription(sub);
+      await saveSubscription(sub);
     } catch (e) {
       console.error('Failed to subscribe:', e);
       setErrorMessage(e instanceof Error ? e.message : 'Unknown error');
@@ -56,6 +60,19 @@ export const NotificationProvider: React.FC<{ children: ReactNode }> = ({ childr
       setPermission(getNotificationPermission());
     }
   }, []);
+
+  const handleUnsubscribe = useCallback(async () => {
+    try {
+      if (subscription) {
+        await removeSubscription(subscription.endpoint);
+        await subscription.unsubscribe();
+        setSubscription(null);
+      }
+    } catch (e) {
+      console.error('Failed to unsubscribe:', e);
+      setErrorMessage(e instanceof Error ? e.message : 'Unknown error');
+    }
+  }, [subscription]);
 
   useEffect(() => {
     if (!isNotificationSupported()) return;
@@ -77,8 +94,18 @@ export const NotificationProvider: React.FC<{ children: ReactNode }> = ({ childr
       subscription,
       errorMessage,
       handleSubscribe,
+      handleUnsubscribe,
     }),
-    [isSupported, isSubscribed, isGranted, isDenied, subscription, errorMessage, handleSubscribe],
+    [
+      isSupported,
+      isSubscribed,
+      isGranted,
+      isDenied,
+      subscription,
+      errorMessage,
+      handleSubscribe,
+      handleUnsubscribe,
+    ],
   );
 
   return (

@@ -1,3 +1,4 @@
+
 generator client {
   provider = "prisma-client"
   output   = "../generated/prisma"
@@ -8,17 +9,23 @@ datasource db {
 }
 
 model User {
-  id            String    @id @default(cuid())
-  email         String    @unique
-  username      String    @unique
-  role          Role      @default(USER)
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
-  name          String    @db.Text
-  emailVerified Boolean   @default(false)
-  image         String?   @db.Text
-  sessions      Session[]
-  accounts      Account[]
+  id                String             @id @default(cuid())
+  email             String             @unique
+  username          String             @unique
+  role              Role               @default(USER)
+  createdAt         DateTime           @default(now())
+  updatedAt         DateTime           @updatedAt
+  name              String             @db.Text
+  emailVerified     Boolean            @default(false)
+  image             String?            @db.Text
+  sessions          Session[]
+  accounts          Account[]
+  pushSubscriptions PushSubscription[]
+  notifications     Notification[]
+
+  banned     Boolean?  @default(false)
+  banReason  String?   @db.Text
+  banExpires DateTime?
 
   @@map("user")
 }
@@ -33,6 +40,8 @@ model Session {
   userAgent String?  @db.Text
   userId    String
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  impersonatedBy String? @db.Text
 
   @@unique([token])
   @@index([userId(length: 191)])
@@ -69,6 +78,32 @@ model Verification {
 
   @@index([identifier(length: 191)])
   @@map("verification")
+}
+
+model PushSubscription {
+  id        String   @id @default(cuid())
+  endpoint  String   @unique
+  auth      String
+  p256dh    String
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId(length: 191)])
+  @@map("push_subscription")
+}
+
+model Notification {
+  id      String   @id @default(cuid())
+  title   String
+  message String   @db.Text
+  userId  String
+  user    User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  sentAt  DateTime @default(now())
+
+  @@index([userId(length: 191)])
+  @@map("notification")
 }
 
 enum Role {
