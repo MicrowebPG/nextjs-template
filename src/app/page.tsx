@@ -12,8 +12,6 @@ export default function Home() {
   const { isSupported, isSubscribed } = useNotification();
   const { data: session } = useSession();
 
-  const isAuthenticated = !!session?.user;
-
   return (
     <main className="mx-auto flex max-w-7xl flex-col items-center gap-12 px-4 py-8">
       <div className="text-center">
@@ -25,15 +23,9 @@ export default function Home() {
         </p>
       </div>
 
-      {/* User Status */}
       <UserStatus />
-
-      {/* Auth Form (shown when not authenticated) */}
-      {!isAuthenticated && <AuthForm />}
-
-      {/* Notification Status */}
+      {!session?.user && <AuthForm />}
       {!isSupported ? <UnsupportedNotificationMessage /> : <NotificationSubscriptionStatus />}
-
       {isSubscribed && <NotificationSubscriptionForm />}
     </main>
   );

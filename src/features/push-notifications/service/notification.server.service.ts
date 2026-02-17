@@ -39,19 +39,21 @@ export async function sendToUser(userId: string, title: string, message: string)
     where: { userId },
   });
 
-  for (const sub of subscriptions) {
-    try {
-      await sendNotification(
-        { endpoint: sub.endpoint, keys: { auth: sub.auth, p256dh: sub.p256dh } },
-        title,
-        message,
-      );
-    } catch (error) {
-      if (error instanceof webpush.WebPushError && error.statusCode === 410) {
-        await prisma.pushSubscription.delete({ where: { id: sub.id } });
+  await Promise.all(
+    subscriptions.map(async (sub) => {
+      try {
+        await sendNotification(
+          { endpoint: sub.endpoint, keys: { auth: sub.auth, p256dh: sub.p256dh } },
+          title,
+          message,
+        );
+      } catch (error) {
+        if (error instanceof webpush.WebPushError && error.statusCode === 410) {
+          await prisma.pushSubscription.delete({ where: { id: sub.id } });
+        }
       }
-    }
-  }
+    }),
+  );
 
   await prisma.notification.create({
     data: { title, message, userId },
