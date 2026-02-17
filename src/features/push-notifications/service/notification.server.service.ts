@@ -1,6 +1,6 @@
+import prisma from '@/lib/prisma';
 import fs from 'fs';
 import path from 'path';
-import prisma from '@/lib/prisma';
 import webpush, { PushSubscription } from 'web-push';
 
 const LOG_FILE = path.join(process.cwd(), 'push-notifications.log');
@@ -19,7 +19,7 @@ interface NotificationPayload {
 
 function getVapidDetails() {
   return {
-    subject: 'mailto:microweb@example.com',
+    subject: 'mailto:sviluppo@microweb.pg.it',
     publicKey: process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY ?? '',
     privateKey: process.env.VAPID_PRIVATE_KEY ?? '',
   };
@@ -54,6 +54,8 @@ export async function sendToUser(userId: string, title: string, message: string)
     subscriptions.map(async (sub) => {
       try {
         logPush(`Sending to endpoint: ${sub.endpoint}`);
+        logPush(`  auth (${sub.auth.length} chars): ${sub.auth}`);
+        logPush(`  p256dh (${sub.p256dh.length} chars): ${sub.p256dh}`);
         await sendNotification(
           { endpoint: sub.endpoint, keys: { auth: sub.auth, p256dh: sub.p256dh } },
           title,
