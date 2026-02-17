@@ -1,6 +1,8 @@
 export function isNotificationSupported(): boolean {
   return (
+    typeof window !== 'undefined' &&
     'serviceWorker' in navigator &&
+    'Notification' in window &&
     'PushManager' in window &&
     'showNotification' in ServiceWorkerRegistration.prototype
   );
@@ -22,7 +24,19 @@ function urlBase64ToUint8Array(base64String: string): ArrayBuffer {
 }
 
 export async function subscribeToPush(): Promise<PushSubscription> {
+  const permission = await Notification.requestPermission();
+  if (permission !== 'granted') {
+    throw new Error('Notification permission denied');
+  }
+
   const registration = await navigator.serviceWorker.ready;
+
+  // Double-check pushManager permission state (required by iOS Safari)
+  const pmState = await registration.pushManager.permissionState({ userVisibleOnly: true });
+  if (pmState !== 'granted') {
+    throw new Error('PushManager permission not granted');
+  }
+
   const vapidKey = process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY;
   if (!vapidKey) throw new Error('VAPID public key is not configured');
   return registration.pushManager.subscribe({

@@ -48,6 +48,7 @@ export async function sendToUser(userId: string, title: string, message: string)
           message,
         );
       } catch (error) {
+        console.error(`[Push] Failed for endpoint ${sub.endpoint}:`, error);
         if (error instanceof webpush.WebPushError && error.statusCode === 410) {
           await prisma.pushSubscription.delete({ where: { id: sub.id } });
         }
