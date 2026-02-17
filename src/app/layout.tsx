@@ -18,6 +18,14 @@ export const metadata: Metadata = {
   title: 'Microweb NextJS Template',
   description:
     'A starter Next.js template for building Scalable Applications with Feature-Based Architecture.',
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: 'default',
+    title: 'Microweb PWA',
+  },
+  other: {
+    'apple-mobile-web-app-capable': 'yes',
+  },
 };
 
 export default function RootLayout({
@@ -27,6 +35,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <link rel="apple-touch-icon" href="/icon-192x192.png" />
+      </head>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <RegisterServiceWorker />
         <PwaInstallPrompt />
