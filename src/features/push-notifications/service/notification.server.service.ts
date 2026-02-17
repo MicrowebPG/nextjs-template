@@ -48,6 +48,8 @@ export async function sendToUser(userId: string, title: string, message: string)
     where: { userId },
   });
 
+  const { publicKey } = getVapidDetails();
+  logPush(`VAPID publicKey (server): ${publicKey}`);
   logPush(`Sending to user ${userId} | title="${title}" | ${subscriptions.length} subscription(s)`);
 
   await Promise.all(

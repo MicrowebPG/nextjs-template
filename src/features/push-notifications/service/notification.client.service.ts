@@ -39,6 +39,7 @@ export async function subscribeToPush(): Promise<PushSubscription> {
 
   const vapidKey = process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY;
   if (!vapidKey) throw new Error('VAPID public key is not configured');
+  console.log('[Push] VAPID publicKey (client):', vapidKey);
   return registration.pushManager.subscribe({
     userVisibleOnly: true,
     applicationServerKey: urlBase64ToUint8Array(vapidKey),
