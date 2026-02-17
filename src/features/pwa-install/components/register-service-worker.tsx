@@ -2,7 +2,7 @@
 
 import { useEffect } from 'react';
 
-const SERVICE_WORKER_PATH = '/sw.js';
+const SERVICE_WORKER_PATH = './sw.js';
 
 /**
  * Registers the service worker once on mount.

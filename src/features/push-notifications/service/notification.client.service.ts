@@ -1,8 +1,6 @@
 export function isNotificationSupported(): boolean {
   return (
-    typeof window !== 'undefined' &&
     'serviceWorker' in navigator &&
-    'Notification' in window &&
     'PushManager' in window &&
     'showNotification' in ServiceWorkerRegistration.prototype
   );
@@ -13,17 +11,10 @@ export function getNotificationPermission(): NotificationPermission {
 }
 
 export async function subscribeToPush(): Promise<PushSubscription> {
-  const permission = await Notification.requestPermission();
-  if (permission !== 'granted') {
-    throw new Error('Notification permission denied');
-  }
-
   const registration = await navigator.serviceWorker.ready;
-  const vapidKey = process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY;
-  if (!vapidKey) throw new Error('VAPID public key is not configured');
   return registration.pushManager.subscribe({
     userVisibleOnly: true,
-    applicationServerKey: vapidKey,
+    applicationServerKey: process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY,
   });
 }
 
