@@ -82,7 +82,7 @@ model Verification {
 
 model PushSubscription {
   id        String   @id @default(cuid())
-  endpoint  String   @unique
+  endpoint  String   @unique(length: 512) @db.Text
   auth      String
   p256dh    String
   userId    String
