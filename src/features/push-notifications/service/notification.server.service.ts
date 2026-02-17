@@ -1,5 +1,14 @@
+import fs from 'fs';
+import path from 'path';
 import prisma from '@/lib/prisma';
 import webpush, { PushSubscription } from 'web-push';
+
+const LOG_FILE = path.join(process.cwd(), 'push-notifications.log');
+
+function logPush(message: string): void {
+  const timestamp = new Date().toISOString();
+  fs.appendFileSync(LOG_FILE, `[${timestamp}] ${message}\n`);
+}
 
 interface NotificationPayload {
   title: string;
@@ -39,18 +48,27 @@ export async function sendToUser(userId: string, title: string, message: string)
     where: { userId },
   });
 
+  logPush(`Sending to user ${userId} | title="${title}" | ${subscriptions.length} subscription(s)`);
+
   await Promise.all(
     subscriptions.map(async (sub) => {
       try {
+        logPush(`Sending to endpoint: ${sub.endpoint}`);
         await sendNotification(
           { endpoint: sub.endpoint, keys: { auth: sub.auth, p256dh: sub.p256dh } },
           title,
           message,
         );
+        logPush(`OK for endpoint: ${sub.endpoint}`);
       } catch (error) {
-        console.error(`[Push] Failed for endpoint ${sub.endpoint}:`, error);
+        const errorMsg =
+          error instanceof webpush.WebPushError
+            ? `WebPushError ${error.statusCode}: ${error.body}`
+            : String(error);
+        logPush(`FAILED for endpoint ${sub.endpoint}: ${errorMsg}`);
         if (error instanceof webpush.WebPushError && error.statusCode === 410) {
           await prisma.pushSubscription.delete({ where: { id: sub.id } });
+          logPush(`Deleted stale subscription: ${sub.id}`);
         }
       }
     }),
@@ -59,4 +77,5 @@ export async function sendToUser(userId: string, title: string, message: string)
   await prisma.notification.create({
     data: { title, message, userId },
   });
+  logPush(`Notification saved to DB for user ${userId}`);
 }
