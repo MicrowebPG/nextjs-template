@@ -1,3 +1,4 @@
+import { RegisterServiceWorker } from '@/components/register-service-worker';
 import { NotificationProvider } from '@/features/push-notifications/hook/use-notification';
 import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
@@ -27,6 +28,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+        <RegisterServiceWorker />
         <NotificationProvider>{children}</NotificationProvider>
       </body>
     </html>

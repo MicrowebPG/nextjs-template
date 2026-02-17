@@ -10,7 +10,7 @@ export const NotificationSubscriptionForm = () => {
   const [title, setTitle] = useState('');
 
   const sendNotification = async () => {
-    await fetch('/api/web-push/send', {
+    await fetch('/api/notifications', {
       method: 'POST',
       body: JSON.stringify({ title, message, subscription }),
       headers: {

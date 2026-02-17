@@ -1,12 +1,19 @@
 'use client';
 
-import React, { createContext, ReactNode, useContext, useEffect, useMemo, useState } from 'react';
+import React, {
+  createContext,
+  ReactNode,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react';
 import {
   isNotificationSupported,
-  isPermissionDenied,
-  isPermissionGranted,
-  registerAndSubscribe,
-} from '../service/notification-push.service';
+  getNotificationPermission,
+  subscribeToPush,
+} from '../service/notification.client.service';
 
 interface NotificationContextType {
   isSupported: boolean;
@@ -20,49 +27,48 @@ interface NotificationContextType {
 
 const NotificationContext = createContext<NotificationContextType | undefined>(undefined);
 
+/**
+ * Provides push notification state and subscription logic to the component tree.
+ * Checks browser support on mount and auto-subscribes if permission was already granted.
+ */
 export const NotificationProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [isSupported, setIsSupported] = useState<boolean>(false);
-  const [isGranted, setIsGranted] = useState<boolean>(false);
-  const [isDenied, setIsDenied] = useState<boolean>(false);
-  const [isSubscribed, setIsSubscribed] = useState<boolean>(false);
+  const [isSupported, setIsSupported] = useState(false);
+  const [permission, setPermission] = useState<NotificationPermission>('default');
   const [subscription, setSubscription] = useState<PushSubscription | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
-  const handleSubscribe = () => {
-    const onSubscribe = (subscription: PushSubscription | null) => {
-      if (subscription) {
-        // for a production app, you would probably have a user account and save the subscription to the user
-        // make http request to save the subscription
-        setIsSubscribed(true);
-        setSubscription(subscription);
-      }
-      setIsGranted(isPermissionGranted());
-      setIsDenied(isPermissionDenied());
-    };
-    const onError = (e: Error) => {
-      console.error('Failed to subscribe cause of: ', e);
-      setIsGranted(isPermissionGranted());
-      setIsDenied(isPermissionDenied());
-      setIsSubscribed(false);
-      setErrorMessage(e?.message);
-    };
-    registerAndSubscribe(onSubscribe, onError);
-  };
+  const isGranted = permission === 'granted';
+  const isDenied = permission === 'denied';
+  const isSubscribed = subscription !== null;
 
-  useEffect(() => {
-    if (isNotificationSupported()) {
-      // eslint-disable-next-line react-hooks/set-state-in-effect
-      setIsSupported(true);
-      const granted = isPermissionGranted();
-      setIsGranted(granted);
-      setIsDenied(isPermissionDenied());
-      if (granted) {
-        handleSubscribe();
-      }
+  /**
+   * Subscribes to push notifications via the service worker
+   * and syncs the permission state regardless of success or failure.
+   */
+  const handleSubscribe = useCallback(async () => {
+    try {
+      const sub = await subscribeToPush();
+      setSubscription(sub);
+    } catch (e) {
+      console.error('Failed to subscribe:', e);
+      setErrorMessage(e instanceof Error ? e.message : 'Unknown error');
+    } finally {
+      setPermission(getNotificationPermission());
     }
   }, []);
 
-  const contextValue = useMemo(
+  useEffect(() => {
+    if (!isNotificationSupported()) return;
+
+    setIsSupported(true);
+    setPermission(getNotificationPermission());
+
+    if (getNotificationPermission() === 'granted') {
+      handleSubscribe();
+    }
+  }, [handleSubscribe]);
+
+  const contextValue = useMemo<NotificationContextType>(
     () => ({
       isSupported,
       isSubscribed,
@@ -72,7 +78,7 @@ export const NotificationProvider: React.FC<{ children: ReactNode }> = ({ childr
       errorMessage,
       handleSubscribe,
     }),
-    [isSupported, isSubscribed, isGranted, isDenied, subscription, errorMessage],
+    [isSupported, isSubscribed, isGranted, isDenied, subscription, errorMessage, handleSubscribe],
   );
 
   return (
@@ -80,6 +86,10 @@ export const NotificationProvider: React.FC<{ children: ReactNode }> = ({ childr
   );
 };
 
+/**
+ * Consumes the {@link NotificationProvider} context.
+ * Must be called within a `NotificationProvider`, otherwise it throws.
+ */
 export const useNotification = (): NotificationContextType => {
   const context = useContext(NotificationContext);
   if (context === undefined) {

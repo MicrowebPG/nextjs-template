@@ -1,4 +1,4 @@
-import { sendNotification } from '@/features/push-notifications/service/notification-sender.service';
+import { sendNotification } from '@/features/push-notifications/service/notification.server.service';
 import { NextRequest } from 'next/server';
 
 export async function POST(req: NextRequest) {
