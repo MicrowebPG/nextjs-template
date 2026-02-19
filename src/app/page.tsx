@@ -3,6 +3,7 @@
 import { AuthForm } from '@/features/auth/components/auth-form';
 import { UserStatus } from '@/features/auth/components/user-status';
 import { useSession } from '@/features/auth/lib/auth-client';
+import { NotificationHistory } from '@/features/push-notifications/components/notification-history';
 import { NotificationSubscriptionForm } from '@/features/push-notifications/components/notification-subscription-form';
 import NotificationSubscriptionStatus from '@/features/push-notifications/components/notification-subscription-status';
 import { UnsupportedNotificationMessage } from '@/features/push-notifications/components/unsupported-notification-message';
@@ -27,6 +28,7 @@ export default function Home() {
       {!session?.user && <AuthForm />}
       {!isSupported ? <UnsupportedNotificationMessage /> : <NotificationSubscriptionStatus />}
       {isSubscribed && <NotificationSubscriptionForm />}
+      {isSubscribed && <NotificationHistory />}
     </main>
   );
 }
