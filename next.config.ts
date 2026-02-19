@@ -1,8 +1,8 @@
-import { withSerwist } from '@serwist/turbopack';
 import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
+  /* config options here */
   skipProxyUrlNormalize: true,
 };
 
-export default withSerwist(nextConfig);
+export default nextConfig;

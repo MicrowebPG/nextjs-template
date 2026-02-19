@@ -1,4 +1,4 @@
-import { SerwistProvider } from '@/components/serwist-provider';
+import { RegisterServiceWorker } from '@/components/register-service-worker';
 import { NotificationProvider } from '@/features/push-notifications/hook/use-notification';
 import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
@@ -28,7 +28,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        <SerwistProvider swUrl="/serwist/sw.js" />
+        <RegisterServiceWorker />
         <NotificationProvider>{children}</NotificationProvider>
       </body>
     </html>
