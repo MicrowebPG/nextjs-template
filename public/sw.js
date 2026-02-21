@@ -7,28 +7,38 @@ self.addEventListener('activate', function (event) {
 });
 
 self.addEventListener('push', function (event) {
-  if (event.data) {
-    const data = event.data.json();
-    const options = {
-      body: data.body,
-      icon: data.icon,
-      badge: '/icons/icon-192x192.png',
-      vibrate: [100, 50, 100],
-      data: {
-        url: data.url,
-      },
-    };
+  let title = 'New Notification';
+  let options = {
+    body: '',
+    icon: '/icon-192x192.png',
+    badge: '/icon-192x192.png',
+    vibrate: [100, 50, 100],
+    data: { url: '/' },
+  };
 
-    event.waitUntil(
-      self.registration.getNotifications().then(function (notifications) {
-        const count = notifications.length + 1;
-        if (navigator.setAppBadge) {
-          navigator.setAppBadge(count);
-        }
-        return self.registration.showNotification(data.title, options);
-      }),
-    );
+  try {
+    if (event.data) {
+      const data = event.data.json();
+      title = data.title || title;
+      options.body = data.body || '';
+      options.icon = data.icon || options.icon;
+      options.data.url = data.url || '/';
+    }
+  } catch (e) {
+    // fallback to defaults above
   }
+
+  event.waitUntil(
+    Promise.all([
+      self.registration.showNotification(title, options),
+      self.registration.getNotifications().then((notifications) => {
+        if (navigator.setAppBadge) {
+          // +1 for the notification we just showed
+          navigator.setAppBadge(notifications.length + 1);
+        }
+      }),
+    ]),
+  );
 });
 
 self.addEventListener('notificationclick', function (event) {
@@ -39,7 +49,7 @@ self.addEventListener('notificationclick', function (event) {
     self.registration.getNotifications().then(function (notifications) {
       if (navigator.setAppBadge) {
         if (notifications.length === 0) {
-          navigator.clearAppBadge();
+          navigator.setAppBadge(0);
         } else {
           navigator.setAppBadge(notifications.length);
         }
