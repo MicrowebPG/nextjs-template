@@ -4,7 +4,7 @@ import { auth } from './auth';
 import { ac, roles } from './permissions';
 
 export const authClient = createAuthClient({
-  plugins: [inferAdditionalFields<typeof auth>(), adminClient({ ac, roles })],
+  plugins: [inferAdditionalFields<typeof auth>(), adminClient({ ac, roles })]
 });
 
 export const {
@@ -16,5 +16,5 @@ export const {
   updateUser,
   deleteUser,
   changePassword,
-  changeEmail,
+  changeEmail
 } = authClient;
