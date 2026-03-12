@@ -18,7 +18,7 @@ export default function Home() {
 
       {/* Session Status */}
       <div className="w-full max-w-2xl rounded-lg border border-neutral-200 bg-neutral-50 p-6 dark:border-neutral-800 dark:bg-neutral-900">
-        F<h2 className="font-semibold">🔐 Session Status</h2>
+        <h2 className="font-semibold">🔐 Session Status</h2>
         {isPending ? (
           <p className="mt-2 text-sm text-muted-foreground">Loading session...</p>
         ) : session ? (

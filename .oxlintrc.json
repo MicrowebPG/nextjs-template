@@ -1,8 +1,8 @@
 {
   "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["nextjs", "unicorn"],
+  "plugins": ["nextjs", "unicorn", "typescript", "react", "jsx-a11y", "import"],
   "categories": {
-    "correctness": "off"
+    "correctness": "error"
   },
   "env": {
     "builtin": true
@@ -35,11 +35,20 @@
     {
       "files": ["**/*.{js,jsx,mjs,ts,tsx,mts,cts}"],
       "rules": {
+        "typescript/no-unused-vars": "error",
+        "typescript/no-explicit-any": "warn",
+        "typescript/ban-ts-comment": "error",
+        "typescript/prefer-as-const": "error",
+        "typescript/consistent-type-imports": "warn",
+        "typescript/no-empty-interface": "warn",
+        "unicorn/prefer-node-protocol": "error",
+        "unicorn/no-array-for-each": "warn",
+        "unicorn/prefer-module": "warn",
         "react/display-name": "error",
         "react/jsx-key": "error",
         "react/jsx-no-comment-textnodes": "error",
         "react/jsx-no-duplicate-props": "error",
-        "react/jsx-no-target-blank": "off",
+        "react/jsx-no-target-blank": "error",
         "react/jsx-no-undef": "error",
         "react/no-children-prop": "error",
         "react/no-danger-with-children": "error",
@@ -49,12 +58,12 @@
         "react/no-render-return-value": "error",
         "react/no-string-refs": "error",
         "react/no-unescaped-entities": "error",
-        "react/no-unknown-property": "off",
-        "react/no-unsafe": "off",
+        "react/no-unknown-property": "warn",
+        "react/no-unsafe": "warn",
         "react/react-in-jsx-scope": "off",
         "react-hooks/rules-of-hooks": "error",
         "react-hooks/exhaustive-deps": "warn",
-        "import/no-anonymous-default-export": "warn",
+        "import/no-anonymous-default-export": "error",
         "jsx-a11y/alt-text": [
           "warn",
           {
