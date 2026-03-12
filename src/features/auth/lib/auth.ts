@@ -1,14 +1,14 @@
-import { Role } from '@/generated/prisma/enums';
-import prisma from '@/lib/prisma';
+import { db } from '@/db';
+
 import { betterAuth } from 'better-auth';
-import { prismaAdapter } from 'better-auth/adapters/prisma';
+import { drizzleAdapter } from 'better-auth/adapters/drizzle';
 import { admin } from 'better-auth/plugins';
 import { AUTH_SESSION_UPDATE_AGE, AUTH_TOKEN_EXPIRY } from '../constants';
 import { ac, roles } from './permissions';
 
 export const auth = betterAuth({
-  database: prismaAdapter(prisma, {
-    provider: 'mysql',
+  database: drizzleAdapter(db, {
+    provider: 'pg',
   }),
   session: {
     expiresIn: AUTH_TOKEN_EXPIRY,
@@ -31,8 +31,8 @@ export const auth = betterAuth({
   plugins: [
     admin({
       ac,
-      defaultRole: Role.USER,
-      adminRoles: [Role.ADMIN, Role.DEVELOPER],
+      defaultRole: 'USER',
+      adminRoles: ['ADMIN', 'DEVELOPER'],
       roles,
     }),
   ],
