@@ -10,7 +10,7 @@
     "lint": "eslint",
     "prepare": "husky",
     "commit": "commit",
-    "clean": "rm -rf .next generated && npm cache clean --force && npx prisma generate"
+    "clean": "rm -rf .next && npm cache clean --force"
   },
   "dependencies": {
     "better-auth": "^1.4.16",
