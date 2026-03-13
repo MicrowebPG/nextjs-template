@@ -5,5 +5,5 @@ export const timestamps = {
   updatedAt: timestamp('updated_at')
     .defaultNow()
     .$onUpdate(() => /* @__PURE__ */ new Date())
-    .notNull(),
+    .notNull()
 };

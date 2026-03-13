@@ -11,7 +11,7 @@ export default function Home() {
         <h1 className="text-4xl font-bold tracking-tighter sm:text-5xl md:text-6xl">
           Feature-Based Design
         </h1>
-        <p className="text-muted-foreground mt-4 text-xl">
+        <p className="mt-4 text-xl text-muted-foreground">
           MicrowebPG Next.js Template with Feature-Based Architecture
         </p>
       </div>
@@ -20,7 +20,7 @@ export default function Home() {
       <div className="w-full max-w-2xl rounded-lg border border-neutral-200 bg-neutral-50 p-6 dark:border-neutral-800 dark:bg-neutral-900">
         <h2 className="font-semibold">🔐 Session Status</h2>
         {isPending ? (
-          <p className="text-muted-foreground mt-2 text-sm">Loading session...</p>
+          <p className="mt-2 text-sm text-muted-foreground">Loading session...</p>
         ) : session ? (
           <div className="mt-3 space-y-2 rounded bg-green-50 p-3 dark:bg-green-950">
             <p className="text-sm font-medium text-green-900 dark:text-green-100">
