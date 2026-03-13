@@ -7,7 +7,8 @@
     "dev": "next dev --turbopack",
     "build": "next build --turbopack",
     "start": "next start",
-    "lint": "oxlint && oxfmt",
+    "lint": "oxlint",
+    "fmt": "oxfmt",
     "prepare": "husky",
     "commit": "commit",
     "clean": "rm -rf .next && npm cache clean --force"
