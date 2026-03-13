@@ -7,7 +7,7 @@
   "sortTailwindcss": {
     "stylesheet": "./src/app/globals.css",
     "functions": ["clsx", "cn"],
-    "preserveWhitespace": true
+    "preserveWhitespace": false
   },
   "sortImports": {
     "newlinesBetween": false,
