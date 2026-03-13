@@ -1,5 +1,4 @@
 import { db } from '@/db';
-
 import { betterAuth } from 'better-auth';
 import { drizzleAdapter } from 'better-auth/adapters/drizzle';
 import { admin } from 'better-auth/plugins';
@@ -9,6 +8,7 @@ import { ac, roles } from './permissions';
 export const auth = betterAuth({
   database: drizzleAdapter(db, {
     provider: 'pg',
+    usePlural: true,
   }),
   session: {
     expiresIn: AUTH_TOKEN_EXPIRY,
