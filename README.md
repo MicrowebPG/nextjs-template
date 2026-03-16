@@ -1,17 +1,18 @@
 # Next.js 16 Template
 
-A modern web application template built with Next.js 16, Better Auth for authentication, Prisma ORM (MySQL), Shadcn UI components, Husky for git hooks, and Commitlint for enforcing conventional commits.
+A modern web application template built with Next.js 16, Better Auth for authentication, Drizzle ORM (PostgreSQL), Shadcn UI components, Husky for git hooks, and Commitlint for enforcing conventional commits.
 
 ## Tech Stack
 
 - **Next.js**: React framework with Turbopack for blazing fast builds
 - **React**: Latest React with improved performance
 - **Better Auth**: Modern authentication library with email/password support
-- **Prisma**: Type-safe ORM for MySQL with custom client generation
+- **Drizzle ORM**: Lightweight, type-safe ORM for PostgreSQL
 - **Shadcn UI**: Beautiful, accessible React components
 - **Tailwind CSS**: Latest utility-first CSS framework
 - **TypeScript**: Type-safe JavaScript
 - **Lucide React**: Beautiful, customizable icons
+- **OXLint / OXFmt**: Fast Rust-based linter and formatter
 - **Husky**: Git hooks for code quality
 - **Commitlint**: Enforces conventional commit message standards
 
@@ -21,7 +22,7 @@ A modern web application template built with Next.js 16, Better Auth for authent
 
 - Node.js >= 18
 - npm or yarn
-- MySQL database
+- PostgreSQL database
 
 ### Installation
 
@@ -35,21 +36,22 @@ npm install
 
 # Set up environment variables
 cp .env.example .env
-# Edit .env with your MySQL DATABASE_URL
+# Edit .env with your PostgreSQL DATABASE_URL
 ```
 
 ### Environment Variables
 
 Create a `.env` file with the variables in `.env.example`.
 
-### Prisma Setup
+### Drizzle Setup
 
 ```bash
-# Generate Prisma client
-npx prisma generate
+# Push schema to the database
+npx drizzle-kit push
 
-# Run migrations
-npx prisma migrate deploy
+# Or generate and run migrations
+npx drizzle-kit generate
+npx drizzle-kit migrate
 ```
 
 ### Running the App
@@ -74,7 +76,7 @@ This project uses **Better Auth** for authentication with the following features
 - **Email/Password Authentication**: Built-in support for email and password login
 - **Role-Based Access Control**: Three user roles - USER, ADMIN, DEVELOPER
 - **Session Management**: Secure sessions with 7-day expiry and daily updates
-- **Database Integration**: Seamless Prisma adapter for MySQL
+- **Database Integration**: Drizzle adapter for PostgreSQL
 
 ### Authentication Setup
 
@@ -91,25 +93,27 @@ This project uses **Better Auth** for authentication with the following features
 
 ## Database & ORM
 
-### Prisma Configuration
+### Drizzle Configuration
 
-- **Custom Client Path**: Generated to `generated/prisma/` for better organization
-- **MySQL Provider**: Optimized for MySQL databases
-- **Schema Models**: User, Session, Account, Verification tables
-- **Role System**: Enum-based user roles (USER, ADMIN, DEVELOPER)
+- **Dialect**: PostgreSQL (`pg` driver)
+- **Schema Location**: `src/db/schema/`
+- **Migrations Output**: `drizzle/`
+- **Config File**: `drizzle.config.ts`
 
 ### Database Schema
 
-The project includes the following models:
+The project includes the following tables:
 
-- **User**: Core user data with email, username, name, role, and email verification status
-- **Session**: Session management with token, expiration, IP address, and user agent tracking
-- **Account**: OAuth and password-based account management with token handling
-- **Verification**: Email verification and password reset token management
+- **users**: Core user data with email, username, name, role, and email verification status
+- **sessions**: Session management with token, expiration, IP address, and user agent tracking
+- **account**: OAuth and password-based account management with token handling
+- **verifications**: Email verification and password reset token management
 - **Role Enum**: USER, ADMIN, DEVELOPER
 
 ## Code Quality & Commits
 
+- **OXLint**: Fast Rust-based linter (`npm run lint`)
+- **OXFmt**: Fast Rust-based formatter (`npm run fmt`)
 - **Husky**: Pre-commit hooks for linting and formatting
 - **Commitlint**: Use `npm run commit` for conventional commit messages
 
@@ -118,10 +122,11 @@ The project includes the following models:
 - `npm run dev` — Start development server with Turbopack
 - `npm run build` — Build for production with Turbopack
 - `npm run start` — Start production server
-- `npm run lint` — Run ESLint
+- `npm run lint` — Run OXLint
+- `npm run fmt` — Run OXFmt formatter
 - `npm run commit` — Start Commitlint CLI for conventional commits
 - `npm run prepare` — Set up Husky git hooks
-- `npm run clean` — Remove `.next` and `generated/prisma/` folders, clean npm cache and regenerate Prisma client
+- `npm run clean` — Remove `.next` folder and clean npm cache
 
 ## Project Structure
 
@@ -135,6 +140,12 @@ The project includes the following models:
 │   │   ├── globals.css                    # Global styles
 │   │   ├── layout.tsx                     # Root layout
 │   │   └── page.tsx                       # Home page
+│   ├── db/
+│   │   ├── index.ts                       # Drizzle client
+│   │   ├── utils.ts                       # DB utilities (timestamps, etc.)
+│   │   └── schema/
+│   │       ├── auth.ts                    # Auth-related tables & enums
+│   │       └── index.ts                   # Schema barrel export
 │   ├── features/
 │   │   └── auth/                          # Authentication feature module
 │   │       ├── components/
@@ -148,29 +159,17 @@ The project includes the following models:
 │   │       │   └── index.ts
 │   │       ├── constants.ts
 │   │       └── index.ts
-│   ├── lib/
-│   │   ├── prisma.ts                      # Prisma client singleton
-│   │   └── utils.ts                       # Utilities (cn, etc.)
-├── prisma/
-│   ├── schema.prisma
-│   └── migrations/
-├── generated/
-│   └── prisma/
-│       ├── browser.ts
-│       ├── client.ts
-│       ├── commonInputTypes.ts
-│       ├── enums.ts
-│       ├── internal/
-│       ├── models/
-│       └── models.ts
-├── public/                                # Static assets (SVGs)
+│   └── lib/
+│       └── utils.ts                       # Utilities (cn, etc.)
+├── drizzle/                               # Generated migrations
+│   └── meta/
+├── public/                                # Static assets
 ├── components.json                        # Shadcn UI configuration
-├── eslint.config.mjs                      # ESLint 9 flat config
+├── drizzle.config.ts                      # Drizzle Kit configuration
 ├── next-env.d.ts
 ├── next.config.ts
 ├── package.json
 ├── postcss.config.mjs
-├── prisma.config.ts
 ├── tsconfig.json
 └── README.md
 ```
