@@ -1,6 +1,6 @@
 # Next.js 16 Template
 
-A modern web application template built with Next.js 16, Better Auth for authentication, Drizzle ORM (PostgreSQL), Shadcn UI components, Husky for git hooks, and Commitlint for enforcing conventional commits.
+A modern web application template built with Next.js 16, Better Auth for authentication, Drizzle ORM (PostgreSQL), Husky for git hooks, and Commitlint for enforcing conventional commits.
 
 ## Tech Stack
 
@@ -8,10 +8,8 @@ A modern web application template built with Next.js 16, Better Auth for authent
 - **React**: Latest React with improved performance
 - **Better Auth**: Modern authentication library with email/password support
 - **Drizzle ORM**: Lightweight, type-safe ORM for PostgreSQL
-- **Shadcn UI**: Beautiful, accessible React components
 - **Tailwind CSS**: Latest utility-first CSS framework
 - **TypeScript**: Type-safe JavaScript
-- **Lucide React**: Beautiful, customizable icons
 - **OXLint / OXFmt**: Fast Rust-based linter and formatter
 - **Husky**: Git hooks for code quality
 - **Commitlint**: Enforces conventional commit message standards
@@ -86,10 +84,20 @@ This project uses **Better Auth** for authentication with the following features
 
 ## UI Components
 
-- **Shadcn UI**: Modern component library with New York styling
 - **Tailwind CSS v4**: Latest version with enhanced performance
-- **Lucide React**: Beautiful, customizable icons
 - **Responsive Design**: Mobile-first approach with modern layouts
+
+### Adding a Component Library
+
+This template ships without a component library to keep things flexible. You can plug in whichever one fits your project best, for example:
+
+- [shadcn/ui](https://ui.shadcn.com/) — Copy-paste components built on Radix UI and Tailwind
+- [Radix UI](https://www.radix-ui.com/) — Unstyled, accessible primitives
+- [Mantine](https://mantine.dev/) — Full-featured React components
+- [Headless UI](https://headlessui.com/) — Accessible, unstyled components from the Tailwind team
+- [Chakra UI](https://chakra-ui.com/) — Component library with a built-in design system
+
+The `cn()` utility in `src/lib/utils.ts` (powered by `clsx` + `tailwind-merge`) is already in place and compatible with most Tailwind-based libraries.
 
 ## Database & ORM
 
@@ -164,7 +172,6 @@ The project includes the following tables:
 ├── drizzle/                               # Generated migrations
 │   └── meta/
 ├── public/                                # Static assets
-├── components.json                        # Shadcn UI configuration
 ├── drizzle.config.ts                      # Drizzle Kit configuration
 ├── next-env.d.ts
 ├── next.config.ts
