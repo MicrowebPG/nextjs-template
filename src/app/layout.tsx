@@ -1,19 +1,19 @@
 import type { Metadata } from 'next';
-import { Geist, Geist_Mono } from 'next/font/google';
+import { Instrument_Sans } from 'next/font/google';
 import './globals.css';
 
-const geistSans = Geist({
-  variable: '--font-geist-sans',
+const instrumentSans = Instrument_Sans({
+  variable: '--font-instrument-sans',
   subsets: ['latin']
 });
 
-const geistMono = Geist_Mono({
-  variable: '--font-geist-mono',
+const instrumentMono = Instrument_Sans({
+  variable: '--font-instrument-mono',
   subsets: ['latin']
 });
 
 export const metadata: Metadata = {
-  title: 'Microweb NextJS Template',
+  title: 'Microweb Next.js Template',
   description:
     'A starter Next.js template for building Scalable Applications with Feature-Based Architecture.'
 };
@@ -25,7 +25,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>{children}</body>
+      <body className={`${instrumentSans.className} ${instrumentMono.className} dark antialiased`}>
+        {children}
+      </body>
     </html>
   );
 }
