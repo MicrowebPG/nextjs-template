@@ -83,6 +83,7 @@ export default function Navbar() {
                   ? 'bg-primary/10 text-primary'
                   : 'text-muted-foreground hover:bg-foreground/5 hover:text-foreground'
               }`}
+              onClick={() => setActiveHash(link.href.startsWith('#') ? link.href : '')}
             >
               {link.name}
               {isActive(link.href) && (
@@ -125,7 +126,10 @@ export default function Navbar() {
               <Link
                 key={link.name}
                 href={link.href}
-                onClick={() => setMobileOpen(false)}
+                onClick={() => {
+                  setActiveHash(link.href.startsWith('#') ? link.href : '');
+                  setMobileOpen(false);
+                }}
                 className={`rounded-xl px-4 py-2.5 text-sm font-medium tracking-wide transition-all duration-200 ${
                   isActive(link.href)
                     ? 'bg-primary/10 text-primary'
@@ -140,7 +144,10 @@ export default function Navbar() {
               target="_blank"
               rel="noopener noreferrer"
               aria-label="View on GitHub"
-              onClick={() => setMobileOpen(false)}
+              onClick={() => {
+                setActiveHash('');
+                setMobileOpen(false);
+              }}
               className="mt-2 flex items-center gap-2 rounded-xl bg-primary px-4 py-2.5 text-sm font-medium text-primary-foreground transition-all duration-200 hover:bg-primary/90 hover:shadow-lg hover:shadow-primary/30"
             >
               <GithubIcon />
