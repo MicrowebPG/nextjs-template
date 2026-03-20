@@ -1,7 +1,34 @@
+'use client';
+
+import { motion, useInView, useReducedMotion } from 'framer-motion';
+import { useRef } from 'react';
 import AnimateIn from '../shared/animate-in';
 import { STACK } from './constants';
 
+const gridVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.06
+    }
+  }
+};
+
+const cardVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { type: 'spring' as const, stiffness: 300, damping: 24 }
+  }
+};
+
 export default function Stack() {
+  const gridRef = useRef(null);
+  const isInView = useInView(gridRef, { once: true, margin: '0px 0px -60px 0px' });
+  const shouldReduceMotion = useReducedMotion();
+
   return (
     <section id="stack" className="relative min-h-screen overflow-hidden px-4 py-28">
       <div
@@ -26,9 +53,20 @@ export default function Stack() {
           </p>
         </AnimateIn>
 
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {STACK.map((item, i) => (
-            <AnimateIn key={item.code} delay={0.06 * i}>
+        <motion.div
+          ref={gridRef}
+          className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4"
+          variants={shouldReduceMotion ? undefined : gridVariants}
+          initial="hidden"
+          animate={isInView ? 'visible' : 'hidden'}
+        >
+          {STACK.map((item) => (
+            <motion.div
+              key={item.code}
+              variants={shouldReduceMotion ? undefined : cardVariants}
+              whileHover={shouldReduceMotion ? undefined : { y: -4 }}
+              transition={{ type: 'spring', stiffness: 400, damping: 17 }}
+            >
               <div className="group relative h-full rounded-lg border border-border/60 bg-card/50 p-5 backdrop-blur-sm transition-all duration-300 hover:border-border hover:bg-card/80">
                 <div
                   className="absolute top-4 bottom-4 left-0 w-px rounded-full opacity-60 transition-all duration-300 group-hover:opacity-100"
@@ -55,9 +93,9 @@ export default function Stack() {
                 <h3 className="mt-3 text-sm font-semibold text-foreground">{item.name}</h3>
                 <p className="mt-1.5 text-xs leading-relaxed text-muted-foreground">{item.desc}</p>
               </div>
-            </AnimateIn>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
       </div>
     </section>
   );

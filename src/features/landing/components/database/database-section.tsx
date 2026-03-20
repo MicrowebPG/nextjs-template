@@ -1,7 +1,34 @@
+'use client';
+
+import { motion, useInView, useReducedMotion } from 'framer-motion';
+import { useRef } from 'react';
 import AnimateIn from '../shared/animate-in';
 import { DB_FEATURES, SCHEMA_LINES } from './constants';
 
+const listVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.08
+    }
+  }
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { type: 'spring' as const, stiffness: 300, damping: 24 }
+  }
+};
+
 export default function DatabaseSection() {
+  const contentRef = useRef(null);
+  const isInView = useInView(contentRef, { once: true, margin: '0px 0px -60px 0px' });
+  const shouldReduceMotion = useReducedMotion();
+
   return (
     <section id="database" className="relative min-h-screen overflow-hidden px-4 py-28">
       <div
@@ -26,8 +53,14 @@ export default function DatabaseSection() {
           </p>
         </AnimateIn>
 
-        <div className="grid gap-12 lg:grid-cols-2 lg:items-start">
-          <AnimateIn delay={0.1}>
+        <div ref={contentRef} className="grid gap-12 lg:grid-cols-2 lg:items-start">
+          <motion.div
+            initial={{ opacity: 0, x: shouldReduceMotion ? 0 : -30 }}
+            animate={
+              isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: shouldReduceMotion ? 0 : -30 }
+            }
+            transition={{ duration: 0.7, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+          >
             <div className="overflow-hidden rounded-lg border border-border bg-card/50 font-mono text-xs backdrop-blur-sm">
               <div className="flex items-center gap-2 border-b border-border/60 px-4 py-2.5">
                 <span className="h-2.5 w-2.5 rounded-full bg-destructive/80" />
@@ -55,11 +88,21 @@ export default function DatabaseSection() {
                 ))}
               </div>
             </div>
-          </AnimateIn>
+          </motion.div>
 
-          <div className="space-y-3">
+          <motion.div
+            className="space-y-3"
+            variants={shouldReduceMotion ? undefined : listVariants}
+            initial="hidden"
+            animate={isInView ? 'visible' : 'hidden'}
+          >
             {DB_FEATURES.map((feature, i) => (
-              <AnimateIn key={i} delay={0.08 * i}>
+              <motion.div
+                key={i}
+                variants={shouldReduceMotion ? undefined : itemVariants}
+                whileHover={shouldReduceMotion ? undefined : { x: 4 }}
+                transition={{ type: 'spring', stiffness: 400, damping: 17 }}
+              >
                 <div className="group flex gap-4 rounded-lg border border-border/60 bg-card/50 p-5 backdrop-blur-sm transition-all duration-300 hover:border-accent/30 hover:bg-card/80">
                   <div className="mt-1.5 h-2 w-2 shrink-0 rounded-full bg-accent shadow-[0_0_6px_1px_rgba(0,255,204,0.3)]" />
                   <div>
@@ -69,9 +112,9 @@ export default function DatabaseSection() {
                     </p>
                   </div>
                 </div>
-              </AnimateIn>
+              </motion.div>
             ))}
-          </div>
+          </motion.div>
         </div>
       </div>
     </section>

@@ -1,5 +1,6 @@
 'use client';
 
+import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -34,6 +35,7 @@ export default function Navbar() {
   const [visible, setVisible] = useState(true);
   const [mobileOpen, setMobileOpen] = useState(false);
   const lastScrollY = useRef(0);
+  const shouldReduceMotion = useReducedMotion();
 
   useEffect(() => {
     const onHashChange = () => setActiveHash(window.location.hash);
@@ -68,12 +70,21 @@ export default function Navbar() {
       className={`fixed top-5 left-1/2 z-50 w-11/12 -translate-x-1/2 rounded-3xl border border-border/40 bg-background backdrop-blur-md transition-all duration-500 lg:w-3/4 ${!visible ? '-translate-y-[calc(100%+1.25rem)]' : ''} `}
     >
       <div className="flex items-center justify-between p-4">
-        <div className="animate-[fadeSlideDown_0.4s_ease_both]">
+        <motion.div
+          initial={{ opacity: 0, y: shouldReduceMotion ? 0 : -8 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4, ease: 'easeOut' }}
+        >
           <NavLogo />
-        </div>
+        </motion.div>
 
         {/* Desktop nav links */}
-        <div className="hidden animate-[fadeSlideDown_0.4s_0.08s_ease_both] items-center gap-1 sm:flex">
+        <motion.div
+          className="hidden items-center gap-1 sm:flex"
+          initial={{ opacity: 0, y: shouldReduceMotion ? 0 : -8 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4, delay: 0.08, ease: 'easeOut' }}
+        >
           {NAV_LINKS.map((link) => (
             <Link
               key={link.name}
@@ -87,14 +98,23 @@ export default function Navbar() {
             >
               {link.name}
               {isActive(link.href) && (
-                <span className="absolute bottom-1.5 left-1/2 h-px w-4 -translate-x-1/2 rounded-full bg-primary" />
+                <motion.span
+                  layoutId="navActiveIndicator"
+                  className="absolute bottom-1.5 left-1/2 h-px w-4 -translate-x-1/2 rounded-full bg-primary"
+                  transition={{ type: 'spring', stiffness: 500, damping: 30 }}
+                />
               )}
             </Link>
           ))}
-        </div>
+        </motion.div>
 
         {/* Desktop CTA */}
-        <div className="hidden animate-[fadeSlideDown_0.4s_0.16s_ease_both] sm:flex">
+        <motion.div
+          className="hidden sm:flex"
+          initial={{ opacity: 0, y: shouldReduceMotion ? 0 : -8 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4, delay: 0.16, ease: 'easeOut' }}
+        >
           <Link
             href="https://github.com/MicrowebPG/nextjs-template"
             target="_blank"
@@ -105,7 +125,7 @@ export default function Navbar() {
             <GithubIcon />
             <span>Github</span>
           </Link>
-        </div>
+        </motion.div>
 
         {/* Mobile hamburger */}
         <button
@@ -119,43 +139,80 @@ export default function Navbar() {
       </div>
 
       {/* Mobile drawer */}
-      {mobileOpen ? (
-        <div className="border-t border-border/40 px-4 pb-4 sm:hidden">
-          <div className="flex flex-col gap-1 pt-3">
-            {NAV_LINKS.map((link) => (
-              <Link
-                key={link.name}
-                href={link.href}
-                onClick={() => {
-                  setActiveHash(link.href.startsWith('#') ? link.href : '');
-                  setMobileOpen(false);
-                }}
-                className={`rounded-xl px-4 py-2.5 text-sm font-medium tracking-wide transition-all duration-200 ${
-                  isActive(link.href)
-                    ? 'bg-primary/10 text-primary'
-                    : 'text-muted-foreground hover:bg-foreground/5 hover:text-foreground'
-                }`}
-              >
-                {link.name}
-              </Link>
-            ))}
-            <Link
-              href={GITHUB_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="View on GitHub"
-              onClick={() => {
-                setActiveHash('');
-                setMobileOpen(false);
+      <AnimatePresence>
+        {mobileOpen && (
+          <motion.div
+            className="border-t border-border/40 px-4 pb-4 sm:hidden"
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: 'auto', opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: shouldReduceMotion ? 0 : 0.25, ease: [0.16, 1, 0.3, 1] }}
+            style={{ overflow: 'hidden' }}
+          >
+            <motion.div
+              className="flex flex-col gap-1 pt-3"
+              initial="hidden"
+              animate="visible"
+              variants={{
+                hidden: { opacity: 0 },
+                visible: {
+                  opacity: 1,
+                  transition: {
+                    staggerChildren: shouldReduceMotion ? 0 : 0.04,
+                    delayChildren: 0.05
+                  }
+                }
               }}
-              className="mt-2 flex items-center gap-2 rounded-xl bg-primary px-4 py-2.5 text-sm font-medium text-primary-foreground transition-all duration-200 hover:bg-primary/90 hover:shadow-lg hover:shadow-primary/30"
             >
-              <GithubIcon />
-              Github
-            </Link>
-          </div>
-        </div>
-      ) : null}
+              {NAV_LINKS.map((link) => (
+                <motion.div
+                  key={link.name}
+                  variants={{
+                    hidden: { opacity: 0, x: -12 },
+                    visible: { opacity: 1, x: 0 }
+                  }}
+                >
+                  <Link
+                    href={link.href}
+                    onClick={() => {
+                      setActiveHash(link.href.startsWith('#') ? link.href : '');
+                      setMobileOpen(false);
+                    }}
+                    className={`block rounded-xl px-4 py-2.5 text-sm font-medium tracking-wide transition-all duration-200 ${
+                      isActive(link.href)
+                        ? 'bg-primary/10 text-primary'
+                        : 'text-muted-foreground hover:bg-foreground/5 hover:text-foreground'
+                    }`}
+                  >
+                    {link.name}
+                  </Link>
+                </motion.div>
+              ))}
+              <motion.div
+                variants={{
+                  hidden: { opacity: 0, x: -12 },
+                  visible: { opacity: 1, x: 0 }
+                }}
+              >
+                <Link
+                  href={GITHUB_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="View on GitHub"
+                  onClick={() => {
+                    setActiveHash('');
+                    setMobileOpen(false);
+                  }}
+                  className="mt-2 flex items-center gap-2 rounded-xl bg-primary px-4 py-2.5 text-sm font-medium text-primary-foreground transition-all duration-200 hover:bg-primary/90 hover:shadow-lg hover:shadow-primary/30"
+                >
+                  <GithubIcon />
+                  Github
+                </Link>
+              </motion.div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </nav>
   );
 }

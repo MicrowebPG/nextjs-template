@@ -1,10 +1,24 @@
+'use client';
+
+import { motion, useInView, useReducedMotion } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useRef } from 'react';
 import { GITHUB_URL, NAV_LINKS } from '../../types/constants';
 
 export default function Footer() {
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true, margin: '0px 0px -40px 0px' });
+  const shouldReduceMotion = useReducedMotion();
+
   return (
-    <footer className="relative border-t border-border/40 px-4 py-12">
+    <motion.footer
+      ref={ref}
+      className="relative border-t border-border/40 px-4 py-12"
+      initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 20 }}
+      animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: shouldReduceMotion ? 0 : 20 }}
+      transition={{ duration: shouldReduceMotion ? 0 : 0.6, ease: [0.16, 1, 0.3, 1] }}
+    >
       <div className="absolute top-0 left-1/2 h-px w-1/2 -translate-x-1/2 bg-linear-to-r from-transparent via-primary/50 to-transparent" />
 
       <div className="mx-auto max-w-6xl">
@@ -43,6 +57,6 @@ export default function Footer() {
           </p>
         </div>
       </div>
-    </footer>
+    </motion.footer>
   );
 }

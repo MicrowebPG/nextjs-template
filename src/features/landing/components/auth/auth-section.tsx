@@ -1,7 +1,34 @@
+'use client';
+
+import { motion, useInView, useReducedMotion } from 'framer-motion';
+import { useRef } from 'react';
 import AnimateIn from '../shared/animate-in';
 import { AUTH_FEATURES } from './constants';
 
+const gridVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.08
+    }
+  }
+};
+
+const cardVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { type: 'spring' as const, stiffness: 300, damping: 24 }
+  }
+};
+
 export default function AuthSection() {
+  const gridRef = useRef(null);
+  const isInView = useInView(gridRef, { once: true, margin: '0px 0px -60px 0px' });
+  const shouldReduceMotion = useReducedMotion();
+
   return (
     <section id="auth" className="relative min-h-screen overflow-hidden px-4 py-28">
       <div className="pointer-events-none absolute inset-0">
@@ -22,9 +49,20 @@ export default function AuthSection() {
           </p>
         </AnimateIn>
 
-        <div className="grid gap-3 sm:grid-cols-2">
-          {AUTH_FEATURES.map((feature, i) => (
-            <AnimateIn key={feature.tag} delay={0.08 * i}>
+        <motion.div
+          ref={gridRef}
+          className="grid gap-3 sm:grid-cols-2"
+          variants={shouldReduceMotion ? undefined : gridVariants}
+          initial="hidden"
+          animate={isInView ? 'visible' : 'hidden'}
+        >
+          {AUTH_FEATURES.map((feature) => (
+            <motion.div
+              key={feature.tag}
+              variants={shouldReduceMotion ? undefined : cardVariants}
+              whileHover={shouldReduceMotion ? undefined : { y: -3 }}
+              transition={{ type: 'spring', stiffness: 400, damping: 17 }}
+            >
               <div className="group relative h-full rounded-lg border border-border/60 bg-card/50 p-5 backdrop-blur-sm transition-all duration-300 hover:border-primary/30 hover:bg-card/80">
                 <div className="mb-3 flex items-center gap-2">
                   <span className="h-1.5 w-1.5 rounded-full bg-green-500 shadow-[0_0_6px_1px_rgba(34,197,94,0.4)]" />
@@ -35,9 +73,9 @@ export default function AuthSection() {
                 <h3 className="text-sm font-semibold text-foreground">{feature.title}</h3>
                 <p className="mt-2 text-xs leading-relaxed text-muted-foreground">{feature.desc}</p>
               </div>
-            </AnimateIn>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
       </div>
     </section>
   );

@@ -1,5 +1,6 @@
 'use client';
 
+import { AnimatePresence, motion } from 'framer-motion';
 import { useState } from 'react';
 import { GITHUB_URL } from '../../types/constants';
 
@@ -58,30 +59,54 @@ export default function Terminal() {
   };
 
   return (
-    <div className="w-full max-w-2xl overflow-hidden rounded-lg border border-border bg-card font-mono text-xs">
-      <div className="flex h-full items-center gap-2 rounded-tl-lg rounded-tr-lg bg-foreground/10 p-3 brightness-50">
+    <motion.div
+      className="w-full min-w-0 overflow-hidden rounded-lg border border-border bg-card font-mono text-xs"
+      whileHover={{ scale: 1.01 }}
+      transition={{ type: 'spring', stiffness: 400, damping: 25 }}
+    >
+      <div className="flex h-full max-w-full items-center gap-2 rounded-tl-lg rounded-tr-lg bg-foreground/10 p-3 brightness-50">
         <span className="h-3 w-3 rounded-full bg-destructive"></span>
         <span className="h-3 w-3 rounded-full bg-yellow-500"></span>
         <span className="h-3 w-3 rounded-full bg-green-500"></span>
 
         <button
-          className="ml-auto"
+          className="relative ml-auto h-4 w-4"
           title={copied ? 'Copied!' : 'Copy to clipboard'}
           onClick={handleCopy}
         >
-          {copied ? (
-            <CheckIcon className="cursor-pointer text-green-500 transition-all" />
-          ) : (
-            <CopyIcon className="cursor-pointer transition-all hover:brightness-75" />
-          )}
+          <AnimatePresence mode="wait">
+            {copied ? (
+              <motion.span
+                key="check"
+                initial={{ opacity: 0, scale: 0.5 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.5 }}
+                transition={{ duration: 0.15 }}
+                className="absolute inset-0"
+              >
+                <CheckIcon className="cursor-pointer text-green-500" />
+              </motion.span>
+            ) : (
+              <motion.span
+                key="copy"
+                initial={{ opacity: 0, scale: 0.5 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.5 }}
+                transition={{ duration: 0.15 }}
+                className="absolute inset-0"
+              >
+                <CopyIcon className="cursor-pointer transition-all hover:brightness-75" />
+              </motion.span>
+            )}
+          </AnimatePresence>
         </button>
       </div>
-      <div className="h-full overflow-x-auto rounded-br-lg rounded-bl-lg bg-card/10 px-5 py-4">
+      <div className="h-full min-w-0 overflow-hidden overflow-x-auto rounded-br-lg rounded-bl-lg bg-card/10 px-5 py-4">
         <p className="text-muted-foreground"># Clone the repository</p>
         <pre>
           <code>git clone {GITHUB_URL}</code>
         </pre>
       </div>
-    </div>
+    </motion.div>
   );
 }
