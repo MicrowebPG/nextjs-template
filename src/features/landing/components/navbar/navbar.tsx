@@ -4,41 +4,8 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
-import { GITHUB_URL, NAV_LINKS } from '../types/constants';
-
-function GithubIcon() {
-  return (
-    <svg
-      className="h-5 w-5"
-      aria-hidden="true"
-      xmlns="http://www.w3.org/2000/svg"
-      fill="currentColor"
-      viewBox="0 0 24 24"
-    >
-      <path
-        fillRule="evenodd"
-        d="M12.006 2a9.847 9.847 0 0 0-6.484 2.44 10.32 10.32 0 0 0-3.393 6.17 10.48 10.48 0 0 0 1.317 6.955 10.045 10.045 0 0 0 5.4 4.418c.504.095.683-.223.683-.494 0-.245-.01-1.052-.014-1.908-2.78.62-3.366-1.21-3.366-1.21a2.711 2.711 0 0 0-1.11-1.5c-.907-.637.07-.621.07-.621.317.044.62.163.885.346.266.183.487.426.647.71.135.253.318.476.538.655a2.079 2.079 0 0 0 2.37.196c.045-.52.27-1.006.635-1.37-2.219-.259-4.554-1.138-4.554-5.07a4.022 4.022 0 0 1 1.031-2.75 3.77 3.77 0 0 1 .096-2.713s.839-.275 2.749 1.05a9.26 9.26 0 0 1 5.004 0c1.906-1.325 2.74-1.05 2.74-1.05.37.858.406 1.828.101 2.713a4.017 4.017 0 0 1 1.029 2.75c0 3.939-2.339 4.805-4.564 5.058a2.471 2.471 0 0 1 .679 1.897c0 1.372-.012 2.477-.012 2.814 0 .272.18.592.687.492a10.05 10.05 0 0 0 5.388-4.421 10.473 10.473 0 0 0 1.313-6.948 10.32 10.32 0 0 0-3.39-6.165A9.847 9.847 0 0 0 12.007 2Z"
-        clipRule="evenodd"
-      />
-    </svg>
-  );
-}
-
-function MenuIcon() {
-  return (
-    <svg className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
-      <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
-    </svg>
-  );
-}
-
-function CloseIcon() {
-  return (
-    <svg className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
-      <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-    </svg>
-  );
-}
+import { GITHUB_URL, NAV_LINKS } from '../../types/constants';
+import { CloseIcon, GithubIcon, MenuIcon } from './icons';
 
 function NavLogo() {
   return (
@@ -64,7 +31,6 @@ function NavLogo() {
 export default function Navbar() {
   const pathname = usePathname();
   const [activeHash, setActiveHash] = useState('');
-  const [scrolled, setScrolled] = useState(false);
   const [visible, setVisible] = useState(true);
   const [mobileOpen, setMobileOpen] = useState(false);
   const lastScrollY = useRef(0);
@@ -79,7 +45,6 @@ export default function Navbar() {
   useEffect(() => {
     const onScroll = () => {
       const y = window.scrollY;
-      setScrolled(y > 20);
       if (y < 10) {
         setVisible(true);
       } else if (y > lastScrollY.current + 8) {
@@ -100,11 +65,7 @@ export default function Navbar() {
 
   return (
     <nav
-      className={`fixed top-5 left-1/2 z-50 w-11/12 -translate-x-1/2 rounded-3xl transition-all duration-500 lg:w-3/4 ${!visible ? '-translate-y-[calc(100%+1.25rem)]' : ''} ${
-        scrolled
-          ? 'border border-primary/20 bg-background/80 shadow-lg shadow-primary/5 backdrop-blur-xl'
-          : 'border border-border/40 bg-transparent'
-      }`}
+      className={`fixed top-5 left-1/2 z-50 w-11/12 -translate-x-1/2 rounded-3xl border border-border/40 bg-background backdrop-blur-md transition-all duration-500 lg:w-3/4 ${!visible ? '-translate-y-[calc(100%+1.25rem)]' : ''} `}
     >
       <div className="flex items-center justify-between p-4">
         <div className="animate-[fadeSlideDown_0.4s_ease_both]">
@@ -125,7 +86,7 @@ export default function Navbar() {
             >
               {link.name}
               {isActive(link.href) && (
-                <span className="absolute bottom-1.5 left-1/2 h-px w-4 -translate-x-1/2 rounded-full bg-primary [box-shadow:0_0_6px_var(--color-primary)]" />
+                <span className="absolute bottom-1.5 left-1/2 h-px w-4 -translate-x-1/2 rounded-full bg-primary" />
               )}
             </Link>
           ))}

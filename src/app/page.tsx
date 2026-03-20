@@ -1,12 +1,10 @@
-import Hero from '@/features/landing/components/hero';
-import Navbar from '@/features/landing/components/navbar';
+import Hero from '@/features/landing/components/hero/hero';
+import Navbar from '@/features/landing/components/navbar/navbar';
 
 export default function Home() {
   return (
-    <main className="relative flex flex-col items-center justify-start">
+    <main className="flex flex-col">
       <Navbar />
-      <Hero />
-      <Hero />
       <Hero />
     </main>
   );
