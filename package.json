@@ -14,12 +14,8 @@
     "clean": "node scripts/clean.mjs"
   },
   "dependencies": {
-    "better-auth": "^1.4.16",
     "clsx": "^2.1.1",
-    "dotenv": "^17.3.1",
-    "drizzle-orm": "^0.45.1",
     "next": "^16.2.0",
-    "pg": "^8.20.0",
     "react": "^19.2.3",
     "react-dom": "^19.2.3",
     "tailwind-merge": "^3.4.0"
@@ -30,18 +26,15 @@
     "@commitlint/prompt-cli": "^20.4.1",
     "@tailwindcss/postcss": "^4.1.18",
     "@types/node": "^25.0.9",
-    "@types/pg": "^8.18.0",
     "@types/react": "^19.2.8",
     "@types/react-dom": "19.2.3",
-    "drizzle-kit": "^0.31.9",
     "husky": "^9.1.7",
     "lint-staged": "^16.2.7",
     "oxfmt": "^0.40.0",
     "oxlint": "^1.55.0",
     "tailwindcss": "^4.1.18",
     "tsx": "^4.21.0",
-    "typescript": "^5.9.3",
-    "zod": "^4.3.5"
+    "typescript": "^5.9.3"
   },
   "overrides": {
     "esbuild": "^0.25.0"
