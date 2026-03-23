@@ -1,35 +1,44 @@
-FROM node:24-alpine as base
-RUN apk add --no-cache g++ make py3-pip libc6-compat
-WORKDIR /app
-COPY package*.json ./
-EXPOSE 3000
+ARG NODE_VERSION=24.13.0-slim
 
-FROM base as builder
+FROM node:${NODE_VERSION} AS dependencies
+
 WORKDIR /app
+
+COPY package.json package-lock.json* .npmrc* ./
+
+RUN --mount=type=cache,target=/root/.npm \
+    npm ci --no-audit --no-fund
+
+FROM node:${NODE_VERSION} AS builder
+
+WORKDIR /app
+
+COPY --from=dependencies /app/node_modules ./node_modules
+
 COPY . .
+
+ENV NODE_ENV=production
+
 RUN npm run build
 
+FROM node:${NODE_VERSION} AS runner
 
-FROM base as production
 WORKDIR /app
 
 ENV NODE_ENV=production
-RUN npm ci
+ENV PORT=3000
+ENV HOSTNAME="0.0.0.0"
 
-RUN addgroup -g 1001 -S nodejs
-RUN adduser -S nextjs -u 1001
-USER nextjs
+COPY --from=builder --chown=node:node /app/public ./public
 
+RUN mkdir .next
+RUN chown node:node .next
 
-COPY --from=builder --chown=nextjs:nodejs /app/.next ./.next
-COPY --from=builder /app/node_modules ./node_modules
-COPY --from=builder /app/package.json ./package.json
-COPY --from=builder /app/public ./public
+COPY --from=builder --chown=node:node /app/.next/standalone ./
+COPY --from=builder --chown=node:node /app/.next/static ./.next/static
 
-CMD npm start
+USER node
 
-FROM base as dev
-ENV NODE_ENV=development
-RUN npm install
-COPY . .
-CMD npm run dev
+EXPOSE 3000
+
+CMD ["node", "server.js"]
