@@ -8,7 +8,7 @@
     "build": "next build --turbopack",
     "start": "next start",
     "test": "vitest",
-    "test:run": "vitest --run",
+    "test:ci": "vitest --run",
     "lint": "oxlint",
     "fmt": "oxfmt",
     "prepare": "husky",

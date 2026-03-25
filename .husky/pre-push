@@ -1,1 +1,2 @@
+npm run test:ci
 npm run build
