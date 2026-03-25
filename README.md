@@ -139,40 +139,46 @@ The project includes the following tables:
 ## Project Structure
 
 ```
-├── src/
-│   ├── app/
-│   │   ├── api/
-│   │   │   └── auth/
-│   │   │       └── [...all]/
-│   │   │           └── route.ts           # Better Auth handler
-│   │   ├── globals.css                    # Global styles
-│   │   ├── layout.tsx                     # Root layout
-│   │   └── page.tsx                       # Home page
-│   ├── db/
-│   │   ├── index.ts                       # Drizzle client
-│   │   ├── utils.ts                       # DB utilities (timestamps, etc.)
-│   │   └── schema/
-│   │       ├── auth.ts                    # Auth-related tables & enums
-│   │       └── index.ts                   # Schema barrel export
-│   ├── features/
-│   │   └── auth/                          # Authentication feature module
-│   │       ├── components/
-│   │       │   └── protected-route.tsx
-│   │       ├── lib/
-│   │       │   ├── auth-client.ts
-│   │       │   ├── auth.ts
-│   │       │   ├── get-session.ts
-│   │       │   └── permissions.ts
-│   │       ├── types/
-│   │       │   └── index.ts
-│   │       ├── constants.ts
-│   │       └── index.ts
-│   └── lib/
-│       └── utils.ts                       # Utilities (cn, etc.)
-├── drizzle/                               # Generated migrations
+├── app/
+│   ├── api/
+│   │   └── auth/
+│   │       └── [...all]/
+│   │           └── route.ts           # Better Auth handler
+│   ├── globals.css
+│   ├── layout.tsx
+│   └── page.tsx
+│
+├── db/
+│   ├── index.ts
+│   ├── utils.ts
+│   └── schema/
+│       ├── auth.ts
+│       └── index.ts
+│
+├── features/
+│   └── auth/
+│       ├── components/
+│       │   └── protected-route.tsx
+│       ├── types/
+│       │   └── index.ts
+│       ├── constants.ts
+│       └── index.ts
+│
+├── lib/
+│   ├── auth/
+│   │   ├── index.ts
+│   │   ├── client.ts
+│   │   ├── session.ts
+│   │   └── permissions.ts
+│   │
+│   └── utils.ts
+│
+├── drizzle/
 │   └── meta/
-├── public/                                # Static assets
-├── drizzle.config.ts                      # Drizzle Kit configuration
+│
+├── public/
+│
+├── drizzle.config.ts
 ├── next-env.d.ts
 ├── next.config.ts
 ├── package.json
