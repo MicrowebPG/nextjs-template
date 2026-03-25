@@ -1,4 +1,4 @@
-import { roles } from '../lib/permissions';
+import { roles } from '@/lib/auth/permissions';
 
 describe('auth roles', () => {
   describe('USER role', () => {

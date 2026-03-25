@@ -2,7 +2,7 @@ import { betterAuth } from 'better-auth';
 import { drizzleAdapter } from 'better-auth/adapters/drizzle';
 import { admin } from 'better-auth/plugins';
 import { db } from '@/db';
-import { AUTH_SESSION_UPDATE_AGE, AUTH_TOKEN_EXPIRY } from '../constants';
+import { AUTH_SESSION_UPDATE_AGE, AUTH_TOKEN_EXPIRY } from '@/features/auth/constants';
 import { ac, roles } from './permissions';
 
 export const auth = betterAuth({

@@ -1,5 +1,5 @@
 import { type ReactNode } from 'react';
-import { getServerSession } from '../lib/get-session';
+import { getServerSession } from '@/lib/auth/session';
 
 interface ProtectedRouteProps {
   children: ReactNode;

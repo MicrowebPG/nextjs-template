@@ -1,6 +1,6 @@
 'use client';
 
-import { useSession } from '@/features/auth/lib/auth-client';
+import { useSession } from '@/lib/auth/client';
 
 export default function Home() {
   const { data: session, isPending } = useSession();
