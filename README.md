@@ -26,7 +26,7 @@ A modern web application template built with Next.js 16, Better Auth for authent
 
 ```bash
 npx create-next-app@latest --example "https://github.com/MicrowebPG/nextjs-template" my-app
-cd nextjs-template
+cd my-app
 
 # Install dependencies
 npm install
