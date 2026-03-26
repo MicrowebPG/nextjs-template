@@ -11,6 +11,7 @@ A modern web application template built with Next.js 16, Better Auth for authent
 - **Tailwind CSS**: Latest utility-first CSS framework
 - **TypeScript**: Type-safe JavaScript
 - **OXLint / OXFmt**: Fast Rust-based linter and formatter
+- **Vitest**: Fast unit test framework with great DX
 - **Husky**: Git hooks for code quality
 - **Commitlint**: Enforces conventional commit message standards
 
@@ -118,12 +119,21 @@ The project includes the following tables:
 - **verifications**: Email verification and password reset token management
 - **Role Enum**: USER, ADMIN, DEVELOPER
 
-## Code Quality & Commits
+## Code Quality & Testing
+
+### Linting & Formatting
 
 - **OXLint**: Fast Rust-based linter (`npm run lint`)
 - **OXFmt**: Fast Rust-based formatter (`npm run fmt`)
 - **Husky**: Pre-commit hooks for linting and formatting
 - **Commitlint**: Use `npm run commit` for conventional commit messages
+
+### Testing
+
+- **Vitest**: Fast unit test framework with great developer experience
+  - Run tests: `npm run test`
+  - Run tests in watch mode: `npm run test:watch`
+  - Generate coverage report: `npm run test:coverage`
 
 ## Scripts
 
@@ -132,6 +142,9 @@ The project includes the following tables:
 - `npm run start` — Start production server
 - `npm run lint` — Run OXLint
 - `npm run fmt` — Run OXFmt formatter
+- `npm run test` — Run Vitest tests
+- `npm run test:watch` — Run Vitest in watch mode
+- `npm run test:coverage` — Generate test coverage report
 - `npm run commit` — Start Commitlint CLI for conventional commits
 - `npm run prepare` — Set up Husky git hooks
 - `npm run clean` — Remove `.next` folder and clean npm cache
