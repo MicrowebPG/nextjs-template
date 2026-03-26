@@ -5,7 +5,7 @@
   "singleQuote": true,
   "printWidth": 100,
   "sortTailwindcss": {
-    "stylesheet": "./src/app/globals.css",
+    "stylesheet": "./app/globals.css",
     "functions": ["clsx", "cn"],
     "preserveWhitespace": false
   },

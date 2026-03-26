@@ -1,2 +1,2 @@
-npm run test:ci
+npm run test
 npm run build

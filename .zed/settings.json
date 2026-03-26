@@ -1,0 +1,24 @@
+{
+  "formatter": {
+    "external": {
+      "command": "node_modules/.bin/oxfmt",
+      "arguments": ["--stdin-filepath", "{buffer_path}"],
+    },
+  },
+  "languages": {
+    "TypeScript": {
+      "code_actions_on_format": {},
+    },
+    "TSX": {
+      "code_actions_on_format": {},
+    },
+    "JavaScript": {
+      "code_actions_on_format": {},
+    },
+    "Prisma": {
+      "format_on_save": "on",
+      "formatter": "language_server",
+      "language_servers": ["prisma-language-server"],
+    },
+  },
+}
