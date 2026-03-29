@@ -11,6 +11,9 @@ COPY . .
 # Check that output: 'standalone' is enabled (not commented)
 RUN grep -E "^\s*output:" next.config.ts | grep -q "standalone" || (echo "ERROR: next.config.ts must have output: 'standalone' enabled" && exit 1)
 
+# Ensure public directory exists (required for COPY in runtime stage)
+RUN mkdir -p public
+
 ENV NODE_ENV=production
 RUN npm run build && \
     curl -sf https://gobinaries.com/tj/node-prune | sh && \
