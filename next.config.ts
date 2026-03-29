@@ -1,7 +1,7 @@
 import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  // output: 'standalone', // Uncomment this for Docker deployments
   skipProxyUrlNormalize: true
 };
 
