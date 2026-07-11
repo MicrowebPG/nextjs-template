@@ -1,39 +1,19 @@
 export class AppError extends Error {
-  constructor(message: string, status: number) {
+  constructor(
+    message: string,
+    public status: number
+  ) {
     super(message);
     this.name = 'AppError';
-    this.status = status;
-  }
-  status: number;
-}
-
-export class DuplicateResourceError extends AppError {
-  constructor(resourceLabel: string) {
-    super(`${resourceLabel} already exists`, 409);
-    this.name = 'DuplicateResourceError';
   }
 }
 
-export class UnauthorizedError extends AppError {
-  constructor(message = 'Unauthorized') {
-    super(message, 401);
-    this.name = 'UnauthorizedError';
-  }
-}
-
-export class NotFoundError extends AppError {
-  constructor(resourceLabel: string) {
-    super(`${resourceLabel} not found`, 404);
-    this.name = 'NotFoundError';
-  }
-}
-
-export class ValidationError extends AppError {
-  constructor(message: string) {
-    super(message, 400);
-    this.name = 'ValidationError';
-  }
-}
+export const AppErrors = {
+  duplicate: (resourceLabel: string) => new AppError(`${resourceLabel} already exists`, 409),
+  notFound: (resourceLabel: string) => new AppError(`${resourceLabel} not found`, 404),
+  unauthorized: (message = 'Unauthorized') => new AppError(message, 401),
+  validation: (message: string) => new AppError(message, 400)
+};
 
 const UNIQUE_VIOLATION = '23505';
 
