@@ -14,7 +14,13 @@
     "fmt": "oxfmt",
     "prepare": "husky",
     "commit": "czg",
-    "clean": "node scripts/clean.mjs"
+    "clean": "node scripts/clean.mjs",
+    "db:push": "drizzle-kit push",
+    "db:pull": "drizzle-kit pull",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "drizzle-kit migrate",
+    "db:studio": "drizzle-kit studio",
+    "db:types": "tsx scripts/generate.ts"
   },
   "dependencies": {
     "better-auth": "^1.4.16",
