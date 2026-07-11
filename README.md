@@ -78,14 +78,9 @@ This project uses **Better Auth** for authentication with the following features
 
 ### Authentication Setup
 
-- Better Auth is configured in `src/features/auth/lib/auth.ts`
-- Client-side auth utilities in `src/features/auth/lib/auth-client.ts`
-- API routes under `src/app/api/auth/[...all]/route.ts`
-
-## UI Components
-
-- **Tailwind CSS v4**: Latest version with enhanced performance
-- **Responsive Design**: Mobile-first approach with modern layouts
+- Better Auth is configured in `lib/auth/index.ts`
+- Client-side auth utilities in `lib/auth/client.ts`
+- API routes under `app/api/auth/[...all]/route.ts`
 
 ### Adding a Component Library
 
@@ -97,14 +92,39 @@ This template ships without a component library to keep things flexible. You can
 - [Headless UI](https://headlessui.com/) — Accessible, unstyled components from the Tailwind team
 - [Chakra UI](https://chakra-ui.com/) — Component library with a built-in design system
 
-The `cn()` utility in `src/lib/utils.ts` (powered by `clsx` + `tailwind-merge`) is already in place and compatible with most Tailwind-based libraries.
+The `cn()` utility in `lib/utils.ts` (powered by `clsx` + `tailwind-merge`) is already in place and compatible with most Tailwind-based libraries.
+
+## API Utilities
+
+- **`withErrorHandling`** (`lib/api/handle-route.ts`): Wraps a route handler and converts thrown `AppError` instances into JSON error responses with the correct status code.
+- **`AppError`** (`lib/errors/app-error.ts`): Base error class plus `DuplicateResourceError`, `UnauthorizedError`, `NotFoundError`, and `ValidationError` subclasses, along with an `isUniqueConstraintViolation()` helper for detecting Postgres unique-constraint violations.
+- **`getBaseUrl`** (`lib/api/base-url.ts`): Resolves the request's base URL (protocol + host) from headers, for use in server components and route handlers.
+
+## Architecture
+
+Features are organized by domain under `features/<feature>/`, each split into three layers with a single direction of dependency: **API route → service → repository**.
+
+- **Repositories** (`features/<feature>/repositories/`): The only layer allowed to import `db` and query Drizzle tables. A repository knows how to read and write rows — it has no business rules and returns plain data (typed via `db/types.ts`).
+- **Services** (`features/<feature>/services/`): Own the business logic. A service calls one or more repositories, enforces rules (uniqueness, permissions, invariants), and is the only layer allowed to `throw` an `AppError` subclass. Services are framework-agnostic — no `NextRequest`/`NextResponse`, no `headers()`.
+- **API routes** (`app/api/**/route.ts`): Thin adapters between HTTP and a service. A route parses/validates the request, calls a service, and shapes the response. Wrap every handler with `withErrorHandling` so a thrown `AppError` is turned into the right JSON error response automatically — routes should not `try/catch` themselves.
+
+```
+features/
+└── <feature>/
+    ├── repositories/
+    │   └── <feature>.repository.ts   # db queries only
+    ├── services/
+    │   └── <feature>.service.ts      # business logic, throws AppError
+```
+
+A route should never query `db` directly, and a repository should never throw an `AppError` — keep each layer talking only to the one below it.
 
 ## Database & ORM
 
 ### Drizzle Configuration
 
 - **Dialect**: PostgreSQL (`pg` driver)
-- **Schema Location**: `src/db/schema/`
+- **Schema Location**: `db/schema/`
 - **Migrations Output**: `drizzle/`
 - **Config File**: `drizzle.config.ts`
 
@@ -147,57 +167,12 @@ The project includes the following tables:
 - `npm run commit` — Start Commitlint CLI for conventional commits
 - `npm run prepare` — Set up Husky git hooks
 - `npm run clean` — Remove `.next` folder and clean npm cache
-
-## Project Structure
-
-```
-├── app/
-│   ├── api/
-│   │   └── auth/
-│   │       └── [...all]/
-│   │           └── route.ts           # Better Auth handler
-│   ├── globals.css
-│   ├── layout.tsx
-│   └── page.tsx
-│
-├── db/
-│   ├── index.ts
-│   ├── utils.ts
-│   └── schema/
-│       ├── auth.ts
-│       └── index.ts
-│
-├── features/
-│   └── auth/
-│       ├── components/
-│       │   └── protected-route.tsx
-│       ├── types/
-│       │   └── index.ts
-│       ├── constants.ts
-│       └── index.ts
-│
-├── lib/
-│   ├── auth/
-│   │   ├── index.ts
-│   │   ├── client.ts
-│   │   ├── session.ts
-│   │   └── permissions.ts
-│   │
-│   └── utils.ts
-│
-├── drizzle/
-│   └── meta/
-│
-├── public/
-│
-├── drizzle.config.ts
-├── next-env.d.ts
-├── next.config.ts
-├── package.json
-├── postcss.config.mjs
-├── tsconfig.json
-└── README.md
-```
+- `npm run db:types` — Generate TypeScript types from the database schema
+- `npm run db:generate` — Generate database schema
+- `npm run db:migrate` — Run database migrations
+- `npm run db:push` — Push database schema changes to the database
+- `npm run db:pull` — Pull database schema changes from the database
+- `npm run db:studio` — Open Drizzle Studio
 
 ## Contributing
 
