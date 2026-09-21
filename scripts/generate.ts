@@ -30,7 +30,7 @@ function main() {
 export type New${pascal} = InferInsertModel<typeof ${key}>;`;
   });
 
-  const fileContent = `// Regenerate with: npm run db:types
+  const fileContent = `// Regenerate with: pnpm db:types
 
 import type { InferInsertModel, InferSelectModel } from 'drizzle-orm';
 import type { ${importNames.join(', ')} } from './schema/index';
