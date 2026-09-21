@@ -7,7 +7,7 @@ export default async function Home() {
   return (
     <main className="mx-auto flex min-h-screen max-w-2xl flex-col items-center justify-center gap-10 px-4">
       <div className="text-center">
-        <h1 className="text-5xl font-bold tracking-tighter">MicrowebPG</h1>
+        <h1 className="text-5xl font-bold tracking-tighter">Your App</h1>
         <p className="mt-3 text-neutral-500">Next.js template with feature-based architecture</p>
       </div>
 
