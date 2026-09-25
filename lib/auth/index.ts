@@ -2,7 +2,13 @@ import { betterAuth } from 'better-auth';
 import { drizzleAdapter } from 'better-auth/adapters/drizzle';
 import { admin } from 'better-auth/plugins';
 import { db } from '@/db';
-import { AUTH_SESSION_UPDATE_AGE, AUTH_TOKEN_EXPIRY } from '@/features/auth/constants';
+import {
+  ADMIN_ROLES,
+  AUTH_SESSION_UPDATE_AGE,
+  AUTH_TOKEN_EXPIRY,
+  DEFAULT_ROLE,
+  ROLES
+} from '@/features/auth/constants';
 import { ac, roles } from './permissions';
 
 export const auth = betterAuth({
@@ -23,7 +29,7 @@ export const auth = betterAuth({
     },
     additionalFields: {
       role: {
-        type: ['ADMIN', 'DEVELOPER', 'USER'],
+        type: [...ROLES],
         input: false
       }
     }
@@ -31,12 +37,12 @@ export const auth = betterAuth({
   plugins: [
     admin({
       ac,
-      defaultRole: 'USER',
-      adminRoles: ['ADMIN', 'DEVELOPER'],
+      defaultRole: DEFAULT_ROLE,
+      adminRoles: [...ADMIN_ROLES],
       roles
     })
   ]
 });
 
-export type Session = typeof auth.$Infer.Session;
-export type User = typeof auth.$Infer.Session.user;
+export type AuthSession = typeof auth.$Infer.Session;
+export type AuthUser = typeof auth.$Infer.Session.user;

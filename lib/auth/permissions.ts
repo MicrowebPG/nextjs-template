@@ -1,5 +1,6 @@
 import { createAccessControl } from 'better-auth/plugins/access';
 import { adminAc, defaultStatements, userAc } from 'better-auth/plugins/admin/access';
+import { type Role } from '@/features/auth/constants';
 
 const statements = {
   ...defaultStatements
@@ -20,4 +21,4 @@ export const roles = {
   DEVELOPER: ac.newRole({
     ...adminAc.statements
   })
-};
+} satisfies Record<Role, unknown>;

@@ -1,0 +1,38 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  lint:
+    uses: ./.github/workflows/setup-project.yml
+    with:
+      name: lint
+      command: pnpm lint && pnpm exec oxfmt --check
+
+  typecheck:
+    uses: ./.github/workflows/setup-project.yml
+    with:
+      name: typecheck
+      command: pnpm exec tsc --noEmit
+
+  test:
+    uses: ./.github/workflows/setup-project.yml
+    with:
+      name: test
+      command: pnpm test:coverage
+
+  build:
+    uses: ./.github/workflows/setup-project.yml
+    with:
+      name: build
+      command: pnpm build

@@ -1,0 +1,17 @@
+name: PR title
+
+on:
+  pull_request:
+    types: [opened, edited, reopened]
+
+permissions:
+  pull-requests: read
+
+jobs:
+  conventional-title:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: printf '%s\n' "$PR_TITLE" | pnpm dlx commitlint
+        env:
+          PR_TITLE: ${{ github.event.pull_request.title }}

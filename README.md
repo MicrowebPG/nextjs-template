@@ -19,7 +19,7 @@ A modern web application template built with Next.js 16, Better Auth for authent
 
 ### Prerequisites
 
-- Node.js >= 18
+- Node.js >= 20.9
 - pnpm
 - PostgreSQL database
 
@@ -45,11 +45,11 @@ Create a `.env` file with the variables in `.env.example`.
 
 ```bash
 # Push schema to the database
-pnpm exec drizzle-kit push
+pnpm db:push
 
 # Or generate and run migrations
-pnpm exec drizzle-kit generate
-pnpm exec drizzle-kit migrate
+pnpm db:generate
+pnpm db:migrate
 ```
 
 ### Running the App
@@ -97,7 +97,7 @@ The `cn()` utility in `lib/utils.ts` (powered by `clsx` + `tailwind-merge`) is a
 ## API Utilities
 
 - **`withErrorHandling`** (`lib/api/handle-route.ts`): Wraps a route handler and converts thrown `AppError` instances into JSON error responses with the correct status code.
-- **`AppError`** (`lib/errors/app-error.ts`): Base error class plus `DuplicateResourceError`, `UnauthorizedError`, `NotFoundError`, and `ValidationError` subclasses, along with an `isUniqueConstraintViolation()` helper for detecting Postgres unique-constraint violations.
+- **`AppError`** (`lib/errors/app-error.ts`): Client-safe error class, plus `AppErrors` factories (`duplicate`, `notFound`, `unauthorized`, `validation`) and an `isUniqueConstraintViolation()` helper for detecting Postgres unique-constraint violations.
 - **`getBaseUrl`** (`lib/api/base-url.ts`): Resolves the request's base URL (protocol + host) from headers, for use in server components and route handlers.
 
 ## Architecture
@@ -116,6 +116,10 @@ features/
     ├── services/
     │   └── <feature>.service.ts      # business logic, throws AppError
 ```
+
+`features/users` + `app/api/me/route.ts` is a minimal working example of all three layers; copy it when adding a feature.
+
+Role names live in one place, `ROLES` in `features/auth/constants.ts`; the DB enum, Better Auth config and permission map all derive from it.
 
 A route should never query `db` directly, and a repository should never throw an `AppError` — keep each layer talking only to the one below it.
 

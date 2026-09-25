@@ -1,12 +1,9 @@
 import { relations } from 'drizzle-orm';
 import { boolean, index, pgEnum, pgTable, text, timestamp } from 'drizzle-orm/pg-core';
+import { ROLES } from '../../features/auth/constants';
 import { timestamps } from '../utils';
 
-export const userRoleEnum = pgEnum('role', {
-  USER: 'USER',
-  ADMIN: 'ADMIN',
-  DEVELOPER: 'DEVELOPER'
-});
+export const userRoleEnum = pgEnum('role', ROLES);
 
 export const user = pgTable('users', {
   id: text('id').primaryKey(),
