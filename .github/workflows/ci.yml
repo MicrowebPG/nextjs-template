@@ -12,68 +12,27 @@ concurrency:
 permissions:
   contents: read
 
-env:
-  DATABASE_URL: postgresql://user:password@localhost:5432/ci
-  BETTER_AUTH_URL: http://localhost:3000
-  BETTER_AUTH_SECRET: ci-only-secret
-
 jobs:
   lint:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version-file: package.json
-          cache: pnpm
-      - run: pnpm install --frozen-lockfile
-      - run: pnpm lint
-      - run: pnpm exec oxfmt --check
+    uses: ./.github/workflows/setup-project.yml
+    with:
+      name: lint
+      command: pnpm lint && pnpm exec oxfmt --check
 
   typecheck:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version-file: package.json
-          cache: pnpm
-      - run: pnpm install --frozen-lockfile
-      - run: pnpm exec tsc --noEmit
+    uses: ./.github/workflows/setup-project.yml
+    with:
+      name: typecheck
+      command: pnpm exec tsc --noEmit
 
   test:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version-file: package.json
-          cache: pnpm
-      - run: pnpm install --frozen-lockfile
-      - run: pnpm test:coverage
-      - uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: coverage
-          path: coverage
-          if-no-files-found: ignore
+    uses: ./.github/workflows/setup-project.yml
+    with:
+      name: test
+      command: pnpm test:coverage
 
   build:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version-file: package.json
-          cache: pnpm
-      - uses: actions/cache@v4
-        with:
-          path: .next/cache
-          key: nextjs-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}-${{ hashFiles('**/*.ts', '**/*.tsx') }}
-          restore-keys: nextjs-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}-
-      - run: pnpm install --frozen-lockfile
-      - run: pnpm build
+    uses: ./.github/workflows/setup-project.yml
+    with:
+      name: build
+      command: pnpm build

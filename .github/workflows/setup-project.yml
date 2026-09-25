@@ -1,0 +1,29 @@
+name: Setup project
+
+on:
+  workflow_call:
+    inputs:
+      name:
+        type: string
+        required: true
+      command:
+        type: string
+        required: true
+
+jobs:
+  run:
+    name: ${{ inputs.name }}
+    runs-on: ubuntu-latest
+    env:
+      DATABASE_URL: postgresql://user:password@localhost:5432/ci
+      BETTER_AUTH_URL: http://localhost:3000
+      BETTER_AUTH_SECRET: ci-only-secret
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: package.json
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: ${{ inputs.command }}
