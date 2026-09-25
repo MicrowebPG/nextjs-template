@@ -1,4 +1,4 @@
-// Regenerate with: npm run db:types
+// Regenerate with: pnpm run db:types
 
 import type { InferInsertModel, InferSelectModel } from 'drizzle-orm';
 import type { account, session, user, verification } from './schema/index';

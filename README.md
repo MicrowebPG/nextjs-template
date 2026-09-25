@@ -20,17 +20,17 @@ A modern web application template built with Next.js 16, Better Auth for authent
 ### Prerequisites
 
 - Node.js >= 18
-- npm or yarn
+- pnpm
 - PostgreSQL database
 
 ### Installation
 
 ```bash
-npx create-next-app@latest --example "https://github.com/MicrowebPG/nextjs-template" my-app
+pnpm create next-app@latest --example "https://github.com/MicrowebPG/nextjs-template" my-app
 cd my-app
 
 # Install dependencies
-npm install
+pnpm install
 
 # Set up environment variables
 cp .env.example .env
@@ -45,24 +45,24 @@ Create a `.env` file with the variables in `.env.example`.
 
 ```bash
 # Push schema to the database
-npx drizzle-kit push
+pnpm exec drizzle-kit push
 
 # Or generate and run migrations
-npx drizzle-kit generate
-npx drizzle-kit migrate
+pnpm exec drizzle-kit generate
+pnpm exec drizzle-kit migrate
 ```
 
 ### Running the App
 
 ```bash
 # Development server with Turbopack
-npm run dev
+pnpm dev
 
 # Build for production with Turbopack
-npm run build
+pnpm build
 
 # Start production server
-npm start
+pnpm start
 ```
 
 App will be available at [http://localhost:3000](http://localhost:3000)
@@ -142,42 +142,42 @@ The project includes the following tables:
 
 ### Linting & Formatting
 
-- **OXLint**: Fast Rust-based linter (`npm run lint`)
-- **OXFmt**: Fast Rust-based formatter (`npm run fmt`)
+- **OXLint**: Fast Rust-based linter (`pnpm lint`)
+- **OXFmt**: Fast Rust-based formatter (`pnpm fmt`)
 - **Husky**: Pre-commit hooks for linting and formatting
-- **Commitlint**: Use `npm run commit` for conventional commit messages
+- **Commitlint**: Use `pnpm commit` for conventional commit messages
 
 ### Testing
 
 - **Vitest**: Fast unit test framework with great developer experience
-  - Run tests: `npm run test`
-  - Run tests in watch mode: `npm run test:watch`
-  - Generate coverage report: `npm run test:coverage`
+  - Run tests: `pnpm test`
+  - Run tests in watch mode: `pnpm test:watch`
+  - Generate coverage report: `pnpm test:coverage`
 
 ## Scripts
 
-- `npm run dev` — Start development server with Turbopack
-- `npm run build` — Build for production with Turbopack
-- `npm run start` — Start production server
-- `npm run lint` — Run OXLint
-- `npm run fmt` — Run OXFmt formatter
-- `npm run test` — Run Vitest tests
-- `npm run test:watch` — Run Vitest in watch mode
-- `npm run test:coverage` — Generate test coverage report
-- `npm run commit` — Start Commitlint CLI for conventional commits
-- `npm run prepare` — Set up Husky git hooks
-- `npm run clean` — Remove `.next` folder and clean npm cache
-- `npm run db:types` — Generate TypeScript types from the database schema
-- `npm run db:generate` — Generate database schema
-- `npm run db:migrate` — Run database migrations
-- `npm run db:push` — Push database schema changes to the database
-- `npm run db:pull` — Pull database schema changes from the database
-- `npm run db:studio` — Open Drizzle Studio
+- `pnpm dev` — Start development server with Turbopack
+- `pnpm build` — Build for production with Turbopack
+- `pnpm start` — Start production server
+- `pnpm lint` — Run OXLint
+- `pnpm fmt` — Run OXFmt formatter
+- `pnpm test` — Run Vitest tests
+- `pnpm test:watch` — Run Vitest in watch mode
+- `pnpm test:coverage` — Generate test coverage report
+- `pnpm commit` — Start Commitlint CLI for conventional commits
+- `pnpm prepare` — Set up Husky git hooks
+- `pnpm clean` — Remove `.next` folder and prune the pnpm store
+- `pnpm db:types` — Generate TypeScript types from the database schema
+- `pnpm db:generate` — Generate database schema
+- `pnpm db:migrate` — Run database migrations
+- `pnpm db:push` — Push database schema changes to the database
+- `pnpm db:pull` — Pull database schema changes from the database
+- `pnpm db:studio` — Open Drizzle Studio
 
 ## Contributing
 
 1. Fork the repo
 2. Create your feature branch (`git checkout -b feature/fooBar`)
-3. Commit with `npm run commit`
+3. Commit with `pnpm commit`
 4. Push to the branch (`git push origin feature/fooBar`)
 5. Open a pull request

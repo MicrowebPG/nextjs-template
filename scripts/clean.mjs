@@ -5,7 +5,7 @@ try {
   console.log('\n⏳ Cleaning...');
 
   await rm('.next', { recursive: true, force: true });
-  execSync('npm cache clean --force && npm dedupe && npm prune', {
+  execSync('pnpm store prune && pnpm dedupe && pnpm prune', {
     stdio: 'inherit'
   });
 
