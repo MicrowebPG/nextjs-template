@@ -178,6 +178,15 @@ The project includes the following tables:
 - `pnpm db:pull` — Pull database schema changes from the database
 - `pnpm db:studio` — Open Drizzle Studio
 
+## Documentation
+
+- [Documentation index](docs/README.md)
+- [Architecture](docs/architecture.md) — layers, request flow, data model
+- [Engineering](docs/engineering.md) — setup, conventions, adding a feature
+- [Operations](docs/operations.md) — environment variables, hooks, CI status
+- [Authentication](docs/features/auth.md)
+- [Architecture decisions](docs/adr/)
+
 ## Contributing
 
 1. Fork the repo
