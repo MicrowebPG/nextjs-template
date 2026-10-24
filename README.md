@@ -184,6 +184,7 @@ The project includes the following tables:
 - [Architecture](docs/ARCHITECTURE.md) — layers, request flow, data model
 - [Engineering](docs/ENGINEERING.md) — setup, conventions, adding a feature
 - [Operations](docs/OPERATIONS.md) — environment variables, hooks, CI/CD
+- [User guide](docs/USER.md) — end-client getting started, tasks, FAQ
 - [Architecture decisions](docs/adr/)
 
 ## Contributing
