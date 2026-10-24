@@ -181,10 +181,9 @@ The project includes the following tables:
 ## Documentation
 
 - [Documentation index](docs/README.md)
-- [Architecture](docs/architecture.md) — layers, request flow, data model
-- [Engineering](docs/engineering.md) — setup, conventions, adding a feature
-- [Operations](docs/operations.md) — environment variables, hooks, CI status
-- [Authentication](docs/features/auth.md)
+- [Architecture](docs/ARCHITECTURE.md) — layers, request flow, data model
+- [Engineering](docs/ENGINEERING.md) — setup, conventions, adding a feature
+- [Operations](docs/OPERATIONS.md) — environment variables, hooks, CI/CD
 - [Architecture decisions](docs/adr/)
 
 ## Contributing
